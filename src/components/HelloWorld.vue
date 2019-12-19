@@ -18,11 +18,6 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
-import { MdButton } from "vue-material/dist/components";
-import "vue-material/dist/vue-material.min.css";
-import "vue-material/dist/theme/default.css";
-Vue.use(MdButton);
-
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 export default {
