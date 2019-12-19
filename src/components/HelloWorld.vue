@@ -5,6 +5,8 @@
       <span class="mdc-button__label">Button: {{ msg }}</span>
     </button>
 
+    <p>{{ error }}</p>
+
     <div v-for="product in products" :key="product.code">
       <pre>{{ product.name }} <template v-if="product.fromSweden">🇸🇪</template><strong>{{ product.price.formattedValue }}</strong></pre>
     </div>
@@ -28,13 +30,15 @@ import Component from "vue-class-component";
 })
 export default class HelloWorld extends Vue {
   products = null;
+  error = null;
 
   mounted() {
     axios
       .get(
         "https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1&fields=DEFAULT&currentPage=0&pageSize=4&storeId=016001&rrSessionId=&rcs="
       )
-      .then(response => (this.products = response.data.placements[0].products));
+      .then(response => (this.products = response.data.placements[0].products))
+      .catch(error => (this.error = error));
   }
 }
 </script>
