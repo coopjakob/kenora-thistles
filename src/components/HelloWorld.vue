@@ -2,14 +2,14 @@
   <div class="hello">
     <button class="mdc-button">
       <div class="mdc-button__ripple"></div>
-      <span class="mdc-button__label">Button</span>
+      <span class="mdc-button__label">Button: {{ msg }}</span>
     </button>
 
-    <div v-for="product in the_products" :key="product.code">
+    <div v-for="product in products" :key="product.code">
       <pre>{{ product.name }} <template v-if="product.fromSweden">🇸🇪</template><strong>{{ product.price.formattedValue }}</strong></pre>
     </div>
     --
-    <pre>{{ the_products }}</pre>
+    <pre>{{ products }}</pre>
   </div>
 </template>
 
@@ -18,25 +18,25 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
-import { Component, Prop, Vue } from "vue-property-decorator";
+import Vue from "vue";
+import Component from "vue-class-component";
 
-export default {
-  props: ["msg"],
-  data() {
-    return {
-      the_products: null
-    };
-  },
+@Component({
+  props: {
+    msg: String
+  }
+})
+export default class HelloWorld extends Vue {
+  products = null;
+
   mounted() {
     axios
       .get(
         "https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1&fields=DEFAULT&currentPage=0&pageSize=4&storeId=016001&rrSessionId=&rcs="
       )
-      .then(
-        response => (this.the_products = response.data.placements[0].products)
-      );
+      .then(response => (this.products = response.data.placements[0].products));
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
