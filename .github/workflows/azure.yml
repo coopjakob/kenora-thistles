@@ -14,9 +14,9 @@ on:
       - master
 
 env:
-  AZURE_WEBAPP_NAME: tortelloni-tomat # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './public' # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '12.x' # set this to the node version to use
+  AZURE_WEBAPP_NAME: beyond-sausage # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './dist' # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '10.x' # set this to the node version to use
 
 jobs:
   build-and-deploy:
