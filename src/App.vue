@@ -8,6 +8,16 @@
   </div>
 </template>
 
+<script>
+import router from "./router";
+
+export default {
+  mounted: function() {
+    this.$router.push("/");
+  }
+};
+</script>
+
 <style lang="less">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
