@@ -1,10 +1,7 @@
 <template>
   <div class="product-matrix">
-    <ProductCard price="11" />
-    <ProductCard price="22" />
-    <ProductCard price="33" />
-    <ProductCard price="44" />
-    <ProductCard price="55" />
+    <ProductCard id="7300156505033" />
+    <ProductCard id="2317301700002" />
   </div>
 </template>
 

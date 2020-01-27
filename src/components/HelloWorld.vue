@@ -7,7 +7,7 @@
 
     <p>{{ error }}</p>
 
-    <div v-for="product in products" :key="product.code">
+    <div v-for="product in productList" :key="product.code">
       <pre>{{ product.name }} <template v-if="product.fromSweden">🇸🇪</template><strong>{{ product.price.formattedValue }} kr</strong></pre>
     </div>
     --
@@ -35,11 +35,16 @@ export default class HelloWorld extends Vue {
   mounted() {
     axios
       .get(
+        // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=generic_page.generic_recs1"
+        // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=home_page.horizontal_recs1"
         "https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1&fields=DEFAULT&storeId=016001&rrSessionId=&rcs="
       )
-      .then(
-        response => (this.productList = response.data.placements[0].products)
-      )
+      .then(response => {
+        Vue.prototype.$receivedProducts = response.data.placements[0].products;
+        return (this.productList = response.data.placements[0].products);
+        // Vue.prototype.$receivedProducts = response.data[0].products;
+        // return (this.productList = response.data[0].products);
+      })
       .catch(error => (this.error = error));
   }
 }
