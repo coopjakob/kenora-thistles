@@ -47,7 +47,7 @@ export default Vue.extend({
 .product-matrix {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: stretch;
 }
 .product-matrix::after {

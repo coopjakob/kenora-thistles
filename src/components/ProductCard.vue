@@ -67,13 +67,14 @@ export default Vue.extend({
 .product-card {
   flex-grow: 1;
   flex-shrink: 1;
-  flex-basis: 14rem;
-  min-width: 14rem;
-  max-width: 18rem;
-  border: thin solid silver;
+  /* flex-basis: 10rem; */
+  min-width: 10rem;
+  max-width: 16rem;
+  /* border: thin solid silver; */
   border-radius: 1rem;
   overflow: hidden;
   margin: 0.5rem;
+  background-color: white;
 }
 .placeholder {
   margin: 1rem;
