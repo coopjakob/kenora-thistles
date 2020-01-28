@@ -23,22 +23,24 @@ export default Vue.extend({
       // imgSrc: "img/304493.webp",
       // imgAlt: "Rostad lök, 28:95 kr/st",
       // price: "28:95"
+      receivedProducts: Vue.prototype.$receivedProducts
     };
   },
   computed: {
     productIndex(): string {
-      const isThisId = (element: Object) => element.code == this.id;
-      return this.$receivedProducts.findIndex(isThisId);
+      return this.receivedProducts.findIndex(
+        (product: any) => product.code === this.id
+      );
     },
     name(): string {
-      return this.$receivedProducts[this.productIndex].name;
+      return this.receivedProducts[this.productIndex].name;
     },
     price(): string {
-      return this.$receivedProducts[this.productIndex].price.formattedValue;
+      return this.receivedProducts[this.productIndex].price.formattedValue;
     },
     imgSrc(): string {
       return this.cloudinaryImg(
-        this.$receivedProducts[this.productIndex].images[0].url
+        this.receivedProducts[this.productIndex].images[0].url
       );
     },
     imgAlt(): string {
