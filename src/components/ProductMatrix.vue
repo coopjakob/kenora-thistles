@@ -1,9 +1,9 @@
 <template>
   <div class="product-matrix">
     <div v-if="error">{{ error }}</div>
-    <div v-for="product in productList" :key="product.code">
-      <ProductCard :id="product.code" />
-    </div>
+    <template v-for="product in productList">
+      <ProductCard :id="product.code" :key="product.code" />
+    </template>
   </div>
 </template>
 
