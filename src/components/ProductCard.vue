@@ -70,11 +70,15 @@ export default Vue.extend({
 
 <style scoped>
 .product-card {
-  flex-grow: 1;
-  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* flex-grow: 1; */
+  /* flex-shrink: 1; */
+  width: 13rem;
   /* flex-basis: 10rem; */
-  min-width: 10rem;
-  max-width: 16rem;
+  /* min-width: 10rem; */
+  /* max-width: 16rem; */
   /* border: thin solid silver; */
   border-radius: 1rem;
   overflow: hidden;

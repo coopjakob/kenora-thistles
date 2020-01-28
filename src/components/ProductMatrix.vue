@@ -48,10 +48,10 @@ export default Vue.extend({
   display: flex;
   flex-wrap: wrap;
   // justify-content: space-between;
-  align-items: stretch;
+  // align-items: stretch;
 }
-.product-matrix::after {
-  content: "";
-  flex: auto;
-}
+// .product-matrix::after {
+//   content: "";
+//   flex: auto;
+// }
 </style>
