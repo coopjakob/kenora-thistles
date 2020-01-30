@@ -5,9 +5,6 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
-    <pre>
-    {{ $receivedProducts }}
-    </pre>
   </div>
 </template>
 
@@ -47,9 +44,5 @@ body {
       color: #42b983;
     }
   }
-}
-
-pre {
-  text-align: left;
 }
 </style>
