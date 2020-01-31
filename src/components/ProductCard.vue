@@ -94,18 +94,6 @@ export default Vue.extend({
     name(): string {
       return this.receivedProducts[this.productIndex].name;
     },
-    // labels() {
-    //   let labels: []; //Array<String>;
-
-    //   if (this.receivedProducts[this.productIndex].productLabels != undefined) {
-    //     this.receivedProducts[this.productIndex].productLabels.forEach(
-    //       element => {
-    //         labels.push("x");
-    //       }
-    //     );
-    //   }
-    //   return labels;
-    // },
     isSweden(): string {
       return this.receivedProducts[this.productIndex].fromSweden;
     },
@@ -248,7 +236,8 @@ export default Vue.extend({
   justify-content: space-between;
   /* flex-grow: 1; */
   /* flex-shrink: 1; */
-  width: 13rem;
+  width: 200px;
+  height: 300px;
   /* flex-basis: 10rem; */
   /* min-width: 10rem; */
   /* max-width: 16rem; */
