@@ -159,7 +159,7 @@ export default Vue.extend({
     // });
   },
   methods: {
-    eventListener(e) {
+    eventListener(e: any) {
       window.console.log(e);
     },
     reach() {
