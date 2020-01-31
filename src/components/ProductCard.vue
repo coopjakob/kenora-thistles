@@ -40,7 +40,22 @@
         />
       </template>
     </div>
+    <div v-if="!added" class="splash">
+      <img
+        src="https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg"
+      />
+      <div class="description">
+        {{ promoDescription }}
+      </div>
+    </div>
     <div v-if="!added" class="price" :class="{ 'is-promo': isPromo() }">
+      <div v-if="isMedmera" class="pill">Medlemspris</div>
+      <div
+        class="max-use-text"
+        v-text="
+          receivedProducts[productIndex].potentialPromotions[0].maxUseText
+        "
+      ></div>
       <span v-if="promoPrice" class="promotion-price">
         {{ promoPrice }} <span class="unit">kr/st </span>
       </span>
@@ -93,6 +108,14 @@ export default Vue.extend({
     // },
     isSweden(): string {
       return this.receivedProducts[this.productIndex].fromSweden;
+    },
+    isMedmera(): any {
+      return this.receivedProducts[this.productIndex].potentialPromotions[0]
+        .medmera;
+    },
+    promoDescription(): any {
+      return this.receivedProducts[this.productIndex].potentialPromotions[0]
+        .description;
     },
     price(): string {
       let price = this.receivedProducts[this.productIndex].price.formattedValue;
@@ -199,6 +222,24 @@ export default Vue.extend({
 });
 </script>
 
+<style lang="less">
+.splash {
+  position: absolute;
+  width: 64px;
+  height: 47px;
+  right: 0;
+  margin: 0.5rem;
+  img {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .description {
+    position: absolute;
+  }
+}
+</style>
+
 <style lang="less" scoped>
 .product-card {
   display: flex;
@@ -235,6 +276,15 @@ export default Vue.extend({
   display: block;
   max-width: 100%;
 }
+.pill {
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: inline-block;
+  color: #005537;
+  background-color: #aad23c;
+  border-radius: 999px;
+  padding: 2px 10px;
+}
 .price {
   font-size: 1.1rem;
   text-align: right;
@@ -252,7 +302,7 @@ export default Vue.extend({
   font-size: 0.9rem;
 }
 .strikeout {
-  display: none;
+  // display: none;
   position: relative;
 }
 .strikeout::after {
