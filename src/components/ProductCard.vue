@@ -8,11 +8,11 @@
     <div class="placeholder">
       <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
     </div>
-    <div class="labels">
+    <div class="gear">
       <svg
         v-if="added"
-        width="63"
-        height="63"
+        width="30"
+        height="30"
         viewBox="0 0 63 63"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -23,24 +23,22 @@
         />
         <path d="M12 33L26.5 45L48.5 17" stroke="white" stroke-width="8" />
       </svg>
-      <img
-        v-if="!added && isSweden"
-        width="30"
-        alt="flag-sweden"
-        src="../assets/flag-sweden.svg"
-      />
-      <img
-        v-if="!added && isKrav"
-        width="30"
-        alt="kravlogo"
-        src="../assets/kravlogo.svg"
-      />
-      <img
-        v-if="!added && isMSC"
-        width="30"
-        alt="msclogo"
-        src="../assets/msclogo.svg"
-      />
+    </div>
+    <div class="labels">
+      <template v-if="!added">
+        <div
+          v-for="label in receivedProducts[productIndex].productLabels"
+          :key="label.code"
+        >
+          <img :src="label.icon" width="30" />
+        </div>
+        <img
+          v-if="isSweden"
+          width="30"
+          alt="flag-sweden"
+          src="../assets/flag-sweden.svg"
+        />
+      </template>
     </div>
     <div v-if="!added" class="price" :class="{ 'is-promo': isPromo() }">
       <span v-if="promoPrice" class="promotion-price">
@@ -69,8 +67,6 @@ export default Vue.extend({
     return {
       added: false,
       isAdding: false,
-      isKrav: true,
-      isMSC: true,
       receivedProducts: Vue.prototype.$receivedProducts
     };
   },
@@ -83,6 +79,18 @@ export default Vue.extend({
     name(): string {
       return this.receivedProducts[this.productIndex].name;
     },
+    // labels() {
+    //   let labels: []; //Array<String>;
+
+    //   if (this.receivedProducts[this.productIndex].productLabels != undefined) {
+    //     this.receivedProducts[this.productIndex].productLabels.forEach(
+    //       element => {
+    //         labels.push("x");
+    //       }
+    //     );
+    //   }
+    //   return labels;
+    // },
     isSweden(): string {
       return this.receivedProducts[this.productIndex].fromSweden;
     },
@@ -112,6 +120,31 @@ export default Vue.extend({
   },
   mounted: function() {
     const element = document.getElementsByClassName("example");
+    // this.receivedProducts[this.productIndex].productLabels.forEach(element => {
+    //   switch(element.code) {
+    //     case "KRAV0U0MARK": {
+    //       this.isKrav = true;
+    //       break;
+    //     }
+    //     case "EKO_SV": {
+    //       this.isEko = true;
+    //       break;
+    //     }
+    //     case "NY": {
+    //       this.isNew = true;
+    //       break;
+    //     }
+    //     case "SVANEN": {
+    //       this.isSvanen = true;
+    //       break;
+    //     }
+    //     case "NYCKELHALET": {
+    //       this.isN
+    //       break;
+    //     }
+
+    //   }
+    // });
   },
   methods: {
     mouseDown() {
@@ -190,9 +223,6 @@ export default Vue.extend({
   top: 0.5rem;
   width: 25%;
 }
-.labels svg {
-  transform: scale(0.5);
-}
 .placeholder {
   margin: 1rem;
   transition: transform 0.05s linear; // slow start
@@ -234,5 +264,11 @@ export default Vue.extend({
   position: absolute;
   right: 0;
   top: 50%;
+}
+.gear {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  margin-bottom: 0.25rem;
 }
 </style>

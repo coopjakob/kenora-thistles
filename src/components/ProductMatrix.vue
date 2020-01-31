@@ -15,6 +15,11 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
+//dev
+let COOP: any;
+COOP = [];
+COOP.config = [];
+
 export default Vue.extend({
   components: {
     ProductCard
@@ -22,15 +27,35 @@ export default Vue.extend({
   data() {
     return {
       productList: Array,
-      error: ""
+      error: "",
+      placement: "home_page.horizontal_recs1"
     };
+  },
+  computed: {
+    rcs(): any {
+      sessionStorage.setItem(
+        "rcs",
+        "eF5j4cotK8lMETA0N7bUNdQ1ZClN9jAxNDFLS05O1k0xMzTRNTFNSdFNTTFMBXJNk5Is0xKNEg0tAZ_oDyg"
+      ); // local env
+      return sessionStorage.getItem("rcs"); //this.getCookieValue("rr_rcs");
+    },
+    rrSessionId(): any {
+      COOP.config.rrSessionId = "s109421930639200";
+      return COOP.config.rrSessionId;
+    },
+    storeId(): any {
+      COOP.config.coopStore = "016001";
+      return COOP.config.coopStore;
+    }
   },
   mounted() {
     axios
       .get(
         // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=generic_page.generic_recs1"
         // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=home_page.horizontal_recs1"
-        "https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1&fields=DEFAULT&storeId=016001&rrSessionId=&rcs="
+        // https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1%257Chome_page.horizontal_recs2%257Chome_page.horizontal_recs1%257Chome_page.horizontal_recs1&fields=DEFAULT
+        // &currentPage=0&pageSize=6&storeId=016001&rrSessionId=s91829745064064&rcs=eF5jYSlN9kg2SU6xtLBM0k00SzPRNTFOTdM1Sks21zUyME1KMzdNNDAzTOXKLSvJTBEwNDe21DXUNQQArgQO0g
+        `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=${this.placement}&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`
       )
       .then(response => {
         this.productList = Vue.prototype.$receivedProducts =
@@ -40,6 +65,17 @@ export default Vue.extend({
         // return (this.productList = response.data[0].products);
       })
       .catch(error => (this.error = error));
+  },
+  methods: {
+    getCookieValue(name: string) {
+      let value: any;
+      if (document.cookie) {
+        value = document.cookie.match(
+          "(^|[^;]+)\\s*" + name + "\\s*=\\s*([^;]+)"
+        );
+      }
+      return value ? value.pop() : "";
+    }
   }
 });
 </script>
