@@ -2,8 +2,8 @@
   <div
     class="product-card"
     :class="{ added: added }"
-    @touchstart.native="reach"
-    @touchend.native="retract"
+    @mousedown="reach"
+    @mouseup="withdraw"
   >
     <div class="placeholder">
       <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
@@ -82,7 +82,8 @@ export default Vue.extend({
     return {
       added: false,
       isAdding: false,
-      receivedProducts: Vue.prototype.$receivedProducts
+      receivedProducts: Vue.prototype.$receivedProducts,
+      handlers: ["handleEvents", { action: "handleAction" }]
     };
   },
   computed: {
@@ -158,6 +159,9 @@ export default Vue.extend({
     // });
   },
   methods: {
+    eventListener(e) {
+      window.console.log(e);
+    },
     reach() {
       window.console.debug("reach");
       if (!this.added) {
@@ -176,8 +180,8 @@ export default Vue.extend({
         );
       }
     },
-    retract() {
-      window.console.debug("retract");
+    withdraw() {
+      window.console.debug("withdraw");
       if (this.isAdding) {
         this.added = true;
         window.console.debug("added");
