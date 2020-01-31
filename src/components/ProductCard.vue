@@ -2,8 +2,10 @@
   <div
     class="product-card"
     :class="{ added: added }"
-    @mouseup="mouseUp"
-    @mousedown="mouseDown"
+    @mousedown="reach"
+    @mouseup="retract"
+    @touchstart.native="reach"
+    @touchend.native="retract"
   >
     <div class="placeholder">
       <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
@@ -158,17 +160,21 @@ export default Vue.extend({
     // });
   },
   methods: {
-    mouseDown() {
+    reach() {
+      window.console.log("reach");
       if (!this.added) {
         this.isAdding = true;
         window.console.log("adding");
       } else {
         this.added = false;
+        window.console.log("removed");
       }
     },
-    mouseUp() {
+    retract() {
+      window.console.log("retract");
       if (this.isAdding) {
         this.added = true;
+        window.console.log("added");
         this.isAdding = false;
       }
     },
