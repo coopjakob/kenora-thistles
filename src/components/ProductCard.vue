@@ -2,8 +2,6 @@
   <div
     class="product-card"
     :class="{ added: added }"
-    @mousedown="reach"
-    @mouseup="retract"
     @touchstart.native="reach"
     @touchend.native="retract"
   >
@@ -161,20 +159,28 @@ export default Vue.extend({
   },
   methods: {
     reach() {
-      window.console.log("reach");
+      window.console.debug("reach");
       if (!this.added) {
         this.isAdding = true;
-        window.console.log("adding");
+        window.console.debug("adding");
+        window.console.info(
+          "%c<Adam> I can see that you are interested in a product. But adding to cart is not yet supported. 🤦‍♂️",
+          "background: #000; color: #fff; padding: 5px"
+        );
       } else {
         this.added = false;
-        window.console.log("removed");
+        window.console.debug("removed");
+        window.console.info(
+          "%c<Rick> I see you thow the item back in the shelf. Guess you don't want it.",
+          "background: #000; color: #fff; padding: 5px"
+        );
       }
     },
     retract() {
-      window.console.log("retract");
+      window.console.debug("retract");
       if (this.isAdding) {
         this.added = true;
-        window.console.log("added");
+        window.console.debug("added");
         this.isAdding = false;
       }
     },
