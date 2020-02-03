@@ -50,12 +50,7 @@
     </div>
     <div v-if="!added" class="price" :class="{ 'is-promo': isPromo() }">
       <div v-if="isMedmera" class="pill">Medlemspris</div>
-      <div
-        class="max-use-text"
-        v-text="
-          receivedProducts[productIndex].potentialPromotions[0].maxUseText
-        "
-      ></div>
+      <div v-if="maxUseText" class="max-use-text">{{ maxUseText }}</div>
       <span v-if="promoPrice" class="promotion-price">
         {{ promoPrice }} <span class="unit">kr/st </span>
       </span>
@@ -69,6 +64,16 @@
 
 <script lang="ts">
 import Vue from "vue";
+
+import axios from "axios";
+import VueAxios from "vue-axios";
+Vue.use(VueAxios, axios);
+
+//dev
+let COOP: any;
+COOP = [];
+COOP.config = [];
+
 export default Vue.extend({
   props: {
     // price: String,
@@ -82,8 +87,7 @@ export default Vue.extend({
     return {
       added: false,
       isAdding: false,
-      receivedProducts: Vue.prototype.$receivedProducts,
-      handlers: ["handleEvents", { action: "handleAction" }]
+      receivedProducts: Vue.prototype.$receivedProducts
     };
   },
   computed: {
@@ -99,12 +103,20 @@ export default Vue.extend({
       return this.receivedProducts[this.productIndex].fromSweden;
     },
     isMedmera(): any {
-      return this.receivedProducts[this.productIndex].potentialPromotions[0]
-        .medmera;
+      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
+        return this.receivedProducts[this.productIndex].potentialPromotions[0]
+          .medmera;
+      } else {
+        return false;
+      }
     },
     promoDescription(): any {
-      return this.receivedProducts[this.productIndex].potentialPromotions[0]
-        .description;
+      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
+        return this.receivedProducts[this.productIndex].potentialPromotions[0]
+          .description;
+      } else {
+        return false;
+      }
     },
     price(): string {
       let price = this.receivedProducts[this.productIndex].price.formattedValue;
@@ -121,6 +133,19 @@ export default Vue.extend({
         return false;
       }
     },
+    maxUseText(): any {
+      let str = false;
+      if (
+        this.receivedProducts[this.productIndex].potentialPromotions[0] &&
+        this.receivedProducts[this.productIndex].potentialPromotions[0]
+          .maxUseText
+      ) {
+        str = this.receivedProducts[this.productIndex].potentialPromotions[0]
+          .maxUseText;
+      }
+
+      return str;
+    },
     imgSrc(): string {
       return this.cloudinaryImg(
         this.receivedProducts[this.productIndex].images[0].url
@@ -128,6 +153,29 @@ export default Vue.extend({
     },
     imgAlt(): string {
       return this.name + " " + this.price + "kr/st";
+    },
+    rcs(): any {
+      sessionStorage.setItem(
+        "rcs",
+        "eF5j4cotK8lMETA0N7bUNdQ1ZClN9jAxNDFLS05O1k0xMzTRNTFNSdFNTTFMBXJNk5Is0xKNEg0tAZ_oDyg"
+      ); // local env
+      return sessionStorage.getItem("rcs"); //this.getCookieValue("rr_rcs");
+    },
+    rrSessionId(): String {
+      COOP.config.rrSessionId = "s109421930639200";
+      return COOP.config.rrSessionId;
+    },
+    user(): String {
+      COOP.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
+      return COOP.config.user;
+    },
+    storeId(): String {
+      COOP.config.coopStore = "016001";
+      return COOP.config.coopStore;
+    },
+    cartguid(): String {
+      COOP.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
+      return COOP.config.cartguid;
     }
   },
   mounted: function() {
@@ -159,6 +207,7 @@ export default Vue.extend({
     // });
   },
   methods: {
+    // object.addEventListener("touchstart", myScript);
     eventListener(e: any) {
       window.console.log(e);
     },
@@ -167,10 +216,6 @@ export default Vue.extend({
       if (!this.added) {
         this.isAdding = true;
         window.console.debug("adding");
-        window.console.info(
-          "%c<Adam> I can see that you are interested in a product. But adding to cart is not yet supported. 🤦‍♂️",
-          "background: #000; color: #fff; padding: 5px"
-        );
       } else {
         this.added = false;
         window.console.debug("removed");
@@ -184,7 +229,12 @@ export default Vue.extend({
       window.console.debug("withdraw");
       if (this.isAdding) {
         this.added = true;
+        this.addToCart();
         window.console.debug("added");
+        window.console.info(
+          "%c<Adam> I can see that you are interested in a product. But adding to cart is not yet supported. 🤦‍♂️",
+          "background: #000; color: #fff; padding: 5px"
+        );
         this.isAdding = false;
       }
     },
@@ -221,6 +271,28 @@ export default Vue.extend({
         "/q_auto,f_auto/" +
         imgId
       );
+    },
+    addToCart(qty: Number = 1) {
+      window.console.debug("addToCart()");
+      // const params = new URLSearchParams();
+      // params.append('code', '7300156585899');
+      // params.append('qty', qty);
+
+      axios
+        .post(
+          `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}/products`,
+          `code=${this.id}&qty=${qty}`
+        )
+        .then(function(response) {
+          window.console.debug(response);
+        })
+        .catch(function(error) {
+          window.console.debug(error);
+        });
+
+      // axios.post(
+      // 'https://www.coop.se/api/hybris/carts/current/items',
+      // {"quantity":999,"id":"57","productId":"7300156507235","variantId":null,"total":0,"isGroceryBag":false,"row":0,"name":null,"itemReplaceable":false,"notBuyable":false,"variants":[],"packageSize":null,"packageSizeUnit":null,"packageSizeInformation":null,"image":null,"manufacturer":null,"recycleFee":null})
     }
   }
 });
