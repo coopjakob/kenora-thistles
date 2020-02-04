@@ -1,63 +1,70 @@
 <template>
-  <div
-    class="product-card"
-    :class="{ added: added }"
-    @mousedown="reach"
-    @mouseup="withdraw"
-  >
-    <div class="placeholder">
-      <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
-    </div>
-    <div class="gear">
-      <svg
-        v-if="added"
-        width="30"
-        height="30"
-        viewBox="0 0 63 63"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M0 31.5C0 14.103 14.103 0 31.5 0V0C48.897 0 63 14.103 63 31.5V31.5C63 48.897 48.897 63 31.5 63V63C14.103 63 0 48.897 0 31.5V31.5Z"
-          fill="#00AA46"
-        />
-        <path d="M12 33L26.5 45L48.5 17" stroke="white" stroke-width="8" />
-      </svg>
-    </div>
-    <div class="labels">
-      <template v-if="!added">
-        <div
-          v-for="label in receivedProducts[productIndex].productLabels"
-          :key="label.code"
-        >
-          <img :src="label.icon" width="30" />
-        </div>
-        <img
-          v-if="isSweden"
+  <div>
+    <div
+      class="product-card"
+      :class="{ added: added }"
+      @mousedown="reach"
+      @mouseup="withdraw"
+    >
+      <div class="placeholder">
+        <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
+      </div>
+      <div class="gear">
+        <svg
+          v-if="added"
           width="30"
-          alt="flag-sweden"
-          src="../assets/flag-sweden.svg"
+          height="30"
+          viewBox="0 0 63 63"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 31.5C0 14.103 14.103 0 31.5 0V0C48.897 0 63 14.103 63 31.5V31.5C63 48.897 48.897 63 31.5 63V63C14.103 63 0 48.897 0 31.5V31.5Z"
+            fill="#00AA46"
+          />
+          <path d="M12 33L26.5 45L48.5 17" stroke="white" stroke-width="8" />
+        </svg>
+      </div>
+      <div class="labels">
+        <template v-if="!added">
+          <div
+            v-for="label in receivedProducts[productIndex].productLabels"
+            :key="label.code"
+          >
+            <img :src="label.icon" width="30" />
+          </div>
+          <img
+            v-if="isSweden"
+            width="30"
+            alt="flag-sweden"
+            src="../assets/flag-sweden.svg"
+          />
+        </template>
+      </div>
+      <div v-if="!added" class="splash">
+        <img
+          src="https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg"
         />
-      </template>
-    </div>
-    <div v-if="!added" class="splash">
-      <img
-        src="https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg"
-      />
-      <div class="description">
-        {{ promoDescription }}
+        <div class="description">
+          {{ promoDescription }}
+        </div>
+      </div>
+      <div v-if="!added" class="price" :class="{ 'is-promo': isPromo() }">
+        <div v-if="isMedmera" class="pill">Medlemspris</div>
+        <div v-if="maxUseText" class="max-use-text">{{ maxUseText }}</div>
+        <span v-if="promoPrice" class="promotion-price">
+          {{ promoPrice }} <span class="unit">kr/st </span>
+        </span>
+        <span :class="{ strikeout: isPromo() }">
+          <span class="formatted-value">{{ price }}</span>
+          <span class="unit"> kr/st</span>
+        </span>
       </div>
     </div>
-    <div v-if="!added" class="price" :class="{ 'is-promo': isPromo() }">
-      <div v-if="isMedmera" class="pill">Medlemspris</div>
-      <div v-if="maxUseText" class="max-use-text">{{ maxUseText }}</div>
-      <span v-if="promoPrice" class="promotion-price">
-        {{ promoPrice }} <span class="unit">kr/st </span>
-      </span>
-      <span :class="{ strikeout: isPromo() }">
-        <span class="formatted-value">{{ price }}</span>
-        <span class="unit"> kr/st</span>
-      </span>
+    <div>
+      <button value="-" @click="updateCart(qty - 1)">-</button>
+      <input v-model.number="qty" type="number" min="0" max="999" />
+      <button value="+" @click="updateCart(qty + 1)">+</button>
     </div>
   </div>
 </template>
@@ -71,8 +78,8 @@ Vue.use(VueAxios, axios);
 
 //dev
 let COOP: any;
-COOP = [];
-COOP.config = [];
+// COOP = [];
+// COOP.config = [];
 
 export default Vue.extend({
   props: {
@@ -84,10 +91,12 @@ export default Vue.extend({
     }
   },
   data() {
+    COOP = this.$store.state;
     return {
       added: false,
       isAdding: false,
-      receivedProducts: Vue.prototype.$receivedProducts
+      receivedProducts: Vue.prototype.$receivedProducts,
+      qty: 0
     };
   },
   computed: {
@@ -162,19 +171,19 @@ export default Vue.extend({
       return sessionStorage.getItem("rcs"); //this.getCookieValue("rr_rcs");
     },
     rrSessionId(): String {
-      COOP.config.rrSessionId = "s109421930639200";
+      // COOP.config.rrSessionId = "s109421930639200";
       return COOP.config.rrSessionId;
     },
     user(): String {
-      COOP.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
+      // COOP.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
       return COOP.config.user;
     },
     storeId(): String {
-      COOP.config.coopStore = "016001";
+      // COOP.config.coopStore = "016001";
       return COOP.config.coopStore;
     },
     cartguid(): String {
-      COOP.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
+      // COOP.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
       return COOP.config.cartguid;
     }
   },
@@ -215,9 +224,10 @@ export default Vue.extend({
       window.console.debug("reach");
       if (!this.added) {
         this.isAdding = true;
-        window.console.debug("adding");
+        window.console.debug("adding...");
       } else {
         this.added = false;
+        this.updateCart(0);
         window.console.debug("removed");
         window.console.info(
           "%c<Rick> I see you thow the item back in the shelf. Guess you don't want it.",
@@ -229,10 +239,10 @@ export default Vue.extend({
       window.console.debug("withdraw");
       if (this.isAdding) {
         this.added = true;
-        this.addToCart();
+        this.updateCart(1);
         window.console.debug("added");
         window.console.info(
-          "%c<Adam> I can see that you are interested in a product. But adding to cart is not yet supported. 🤦‍♂️",
+          "%c<Adam> I can see that you are interested in a product.",
           "background: #000; color: #fff; padding: 5px"
         );
         this.isAdding = false;
@@ -272,8 +282,13 @@ export default Vue.extend({
         imgId
       );
     },
-    addToCart(qty: Number = 1) {
-      window.console.debug("addToCart()");
+    updateCart(newQuantity: number) {
+      window.console.debug("updateCart(", newQuantity, ")");
+      window.console.debug("old qty:", this.qty);
+
+      this.qty = newQuantity;
+      window.console.debug("new qty:", this.qty);
+
       // const params = new URLSearchParams();
       // params.append('code', '7300156585899');
       // params.append('qty', qty);
@@ -281,7 +296,7 @@ export default Vue.extend({
       axios
         .post(
           `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}/products`,
-          `code=${this.id}&qty=${qty}`
+          `code=${this.id}&qty=${this.qty}`
         )
         .then(function(response) {
           window.console.debug(response);

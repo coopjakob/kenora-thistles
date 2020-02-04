@@ -9,6 +9,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Vuex from "vuex";
+Vue.use(Vuex);
+
 import ProductCard from "@/components/ProductCard.vue";
 
 import axios from "axios";
@@ -17,42 +20,46 @@ Vue.use(VueAxios, axios);
 
 //dev
 let COOP: any;
-COOP = [];
-COOP.config = [];
+// COOP = [];
+// COOP.config = [];
+// let COOP = this.$store.state;
 
 export default Vue.extend({
   components: {
     ProductCard
   },
   data() {
+    COOP = this.$store.state;
     return {
       productList: Array,
       error: "",
       placement: "home_page.horizontal_recs1"
+      // test: COOP.config
     };
   },
   computed: {
     rcs(): any {
+      // dev
       sessionStorage.setItem(
         "rcs",
         "eF5j4cotK8lMETA0N7bUNdQ1ZClN9jAxNDFLS05O1k0xMzTRNTFNSdFNTTFMBXJNk5Is0xKNEg0tAZ_oDyg"
-      ); // local env
+      );
       return sessionStorage.getItem("rcs"); //this.getCookieValue("rr_rcs");
     },
     rrSessionId(): String {
-      COOP.config.rrSessionId = "s109421930639200";
+      // COOP.config.rrSessionId = "s109421930639200";
       return COOP.config.rrSessionId;
     },
     user(): String {
-      COOP.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
+      // COOP.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
       return COOP.config.user;
     },
     storeId(): String {
-      COOP.config.coopStore = "016001";
+      // COOP.config.coopStore = "016001";
       return COOP.config.coopStore;
     },
     cartguid(): String {
-      COOP.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
+      // COOP.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
       return COOP.config.cartguid;
     }
   },
