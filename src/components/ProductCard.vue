@@ -126,9 +126,10 @@ export default Vue.extend({
           return COOP.minicart.entries[quantityFromCartIndex].quantity;
         }
 
+        let returnValue = this.savedQuantity as number;
         // return 0;
         // Dev, if not in cart
-        return this.savedQuantity;
+        return returnValue;
       },
       set: function(value: number) {
         this.savedQuantity = value;
