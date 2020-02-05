@@ -61,9 +61,17 @@
         </span>
       </div>
     </div>
-    <div>
+    <div class="add-to-cart">
       <button value="-" @click="updateCart(qty - 1)">-</button>
-      <input v-model.number="qty" type="number" min="0" max="999" />
+      <!-- <input v-model.number="qty" type="number" min="0" max="999" /> -->
+      <input
+        type="number"
+        min="0"
+        max="999"
+        :placeholder="qty"
+        @keydown.enter="updateCartInput"
+      />
+      <!-- <input v-model.number="updateCartModel" type="number" min="0" max="999" :placeholder="qty"/> -->
       <button value="+" @click="updateCart(qty + 1)">+</button>
     </div>
   </div>
@@ -96,10 +104,28 @@ export default Vue.extend({
       added: false,
       isAdding: false,
       receivedProducts: Vue.prototype.$receivedProducts,
-      qty: 0
+      qty: 0 as number,
+      quantity: 0 as number
     };
   },
   computed: {
+    updateCartModel: {
+      get: function() {
+        let qty: Number = this.qty;
+        if (qty > 0) {
+          return qty;
+        } else {
+          return "";
+        }
+      },
+      set: function(value: number) {
+        if (value > 0) {
+          this.updateCart(value);
+        } else {
+          this.updateCart(0);
+        }
+      }
+    },
     productIndex(): string {
       return this.receivedProducts.findIndex(
         (product: any) => product.code === this.id
@@ -282,7 +308,22 @@ export default Vue.extend({
         imgId
       );
     },
+    updateCartInput(e: any) {
+      let input = +e.target.value;
+      window.console.debug(input);
+
+      if (input > 0) {
+        this.updateCart(input);
+      } else {
+        this.updateCart(0);
+      }
+      e.target.value = null;
+    },
     updateCart(newQuantity: number) {
+      if (newQuantity < 0) {
+        newQuantity = 0;
+      }
+
       window.console.debug("updateCart(", newQuantity, ")");
       window.console.debug("old qty:", this.qty);
 
@@ -412,5 +453,10 @@ export default Vue.extend({
   width: 100%;
   bottom: 0;
   margin-bottom: 0.25rem;
+}
+.add-to-cart {
+  input {
+    text-align: center;
+  }
 }
 </style>
