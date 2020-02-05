@@ -62,7 +62,9 @@
       </div>
     </div>
     <div class="add-to-cart">
-      <button value="-" @click="updateCart(qty - 1)">-</button>
+      <button value="-" :disabled="qty == 0" @click="updateCart(qty - 1)">
+        -
+      </button>
       <!-- <input v-model.number="qty" type="number" min="0" max="999" /> -->
       <input
         type="number"
@@ -104,14 +106,55 @@ export default Vue.extend({
       added: false,
       isAdding: false,
       receivedProducts: Vue.prototype.$receivedProducts,
-      qty: 0 as number,
-      quantity: 0 as number
+      // qty: 0 as number,
+      // quantity: 0 as number,
+      savedQuantity: 0 as number
     };
   },
   computed: {
+    // TODO: need to reorder the flow, including test data
+    qty: {
+      get: function() {
+        let quantityFromCartIndex = COOP.minicart.entries.findIndex(
+          (entry: any) => entry.product.code === this.id
+        );
+
+        window.console.debug("quantityFromCartIndex:", quantityFromCartIndex);
+
+        if (quantityFromCartIndex > 0) {
+          window.console.debug("quantity exist in cart product, get old");
+          return COOP.minicart.entries[quantityFromCartIndex].quantity;
+        }
+
+        // return 0;
+        // Dev, if not in cart
+        return this.savedQuantity;
+      },
+      set: function(value: number) {
+        this.savedQuantity = value;
+
+        let quantityFromCartIndex = COOP.minicart.entries.findIndex(
+          (entry: any) => entry.product.code === this.id
+        );
+
+        window.console.debug("quantityFromCartIndex:", quantityFromCartIndex);
+
+        // DEV
+        // you need to set via API and then get the new file, then update,
+        if (quantityFromCartIndex > 0) {
+          window.console.debug(
+            "quantity exist in cart product, set new value",
+            value
+          );
+          COOP.minicart.entries[quantityFromCartIndex].quantity = value;
+          // latest from server
+          // update here or update on this.savedQuantity?
+        }
+      }
+    },
     updateCartModel: {
       get: function() {
-        let qty: Number = this.qty;
+        let qty: number = this.qty;
         if (qty > 0) {
           return qty;
         } else {
@@ -457,6 +500,11 @@ export default Vue.extend({
 .add-to-cart {
   input {
     text-align: center;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 </style>
