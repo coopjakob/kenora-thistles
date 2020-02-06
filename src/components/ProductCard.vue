@@ -61,7 +61,8 @@
         </span>
       </div>
     </div>
-    <div class="add-to-cart">
+    <button v-if="qty === 0" @click="updateCart(1)">Lägg till</button>
+    <div v-if="qty > 0" class="add-to-cart">
       <button value="-" :disabled="qty == 0" @click="updateCart(qty - 1)">
         -
       </button>
