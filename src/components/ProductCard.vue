@@ -9,16 +9,18 @@
       </div>
     </div>
     <div class="product-image">
-      <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
+      <a :href="url" :title="imgAlt"><img :src="imgSrc" :alt="imgAlt"/></a>
     </div>
 
     <div class="splash">
-      <div v-if="promoDescription" class="promo-text">
-        {{ promoDescription }}
+      <div v-if="splashText" class="promo-text">
+        {{ splashText }}
       </div>
-      <div class="price">
-        ##<span class="unit"> /xx</span>
-        <span class="decimal">##</span>
+      <div v-if="splashTextPrice" class="price">
+        {{ splashTextPrice }}
+      </div>
+      <div v-else class="price">
+        {{ splashPrice }}
       </div>
     </div>
 
@@ -50,56 +52,58 @@
       {{ theInfo }}
     </div>
 
-    <div v-if="isMedmera" class="members-only">
-      Medlemspris
-    </div>
-
-    <div v-if="maxUseText" class="max-use">
-      {{ maxUseText }}
-    </div>
-
-    <div class="product-price" :class="{ 'is-promo': promoPrice }">
-      <div v-if="promoPrice" class="promo-price">
-        {{ promoPrice }}:-<span class="unit">/xx</span>
+    <div class="pricing">
+      <div v-if="isMedmera" class="members-only">
+        Medlemspris
       </div>
-      <div class="pick-price">{{ price }}<span class="unit">/xx</span></div>
-    </div>
 
-    <div class="action">
-      <div
-        v-if="qty === 0"
-        class="add-to-cart"
-        tabindex="0"
-        role="button"
-        aria-pressed="false"
-        @click="updateCart(1)"
-      >
-        <span>Lägg till</span>
+      <div v-if="maxUseText" class="max-use">
+        {{ maxUseText }}
       </div>
-      <div v-else class="qty-selector" aria-label="Minska antalet">
-        <button class="add" @click="updateCart(qty - 1)">
-          <img
-            width="11"
-            src="https://www.coop.se/Assets/Icons/sprite/minus-white.svg?version=@{cache-version}"
-          />
-        </button>
-        <input
-          type="number"
-          min="0"
-          max="999"
-          :placeholder="qty"
-          @keydown.enter="updateCartInput"
-        />
-        <button
-          class="remove"
-          aria-label="Öka antalet"
-          @click="updateCart(qty + 1)"
+
+      <div class="product-price" :class="{ 'is-promo': promoPrice }">
+        <div v-if="promoPrice" class="promo-price">
+          {{ promoPrice }}:-<span class="unit">/st</span>
+        </div>
+        <div class="pick-price">{{ price }}<span class="unit">/st</span></div>
+      </div>
+
+      <div class="action">
+        <div
+          v-if="qty === 0"
+          class="add-to-cart"
+          tabindex="0"
+          role="button"
+          aria-pressed="false"
+          @click="updateCart(1)"
         >
-          <img
-            width="11"
-            src="https://www.coop.se/Assets/Icons/sprite/plus-white.svg?version=@{cache-version}"
+          <span>Lägg till</span>
+        </div>
+        <div v-else class="qty-selector" aria-label="Minska antalet">
+          <button class="add" @click="updateCart(qty - 1)">
+            <img
+              width="11"
+              src="https://www.coop.se/Assets/Icons/sprite/minus-white.svg?version=@{cache-version}"
+            />
+          </button>
+          <input
+            type="number"
+            min="0"
+            max="999"
+            :placeholder="qty"
+            @keydown.enter="updateCartInput"
           />
-        </button>
+          <button
+            class="remove"
+            aria-label="Öka antalet"
+            @click="updateCart(qty + 1)"
+          >
+            <img
+              width="11"
+              src="https://www.coop.se/Assets/Icons/sprite/plus-white.svg?version=@{cache-version}"
+            />
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -201,6 +205,9 @@ export default Vue.extend({
         (product: any) => product.code === this.id
       );
     },
+    url(): string {
+      return "https://coop.se" + this.receivedProducts[this.productIndex].url;
+    },
     name(): string {
       return this.receivedProducts[this.productIndex].name;
     },
@@ -228,6 +235,79 @@ export default Vue.extend({
       if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
         return this.receivedProducts[this.productIndex].potentialPromotions[0]
           .medmera;
+      } else {
+        return false;
+      }
+    },
+    splashText(): any {
+      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
+        let promoText: any;
+        const regex = /(\d{1,} för) \d{1,}/g;
+
+        promoText = regex.exec(
+          this.receivedProducts[this.productIndex].potentialPromotions[0]
+            .description
+        );
+        if (promoText) {
+          return promoText[1];
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
+    splashTextPrice(): any {
+      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
+        let promoText: any;
+        const regex = /\d{1,} för (\d{1,}.+)/g;
+
+        promoText = regex.exec(
+          this.receivedProducts[this.productIndex].potentialPromotions[0]
+            .description
+        );
+        if (promoText) {
+          return promoText[1];
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
+    splashPrice(): any {
+      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
+        let promoText: any;
+        const regex = /(\d+)(.+) \/(.+)/g;
+
+        promoText = regex.exec(
+          this.receivedProducts[this.productIndex].potentialPromotions[0]
+            .description
+        );
+
+        if (promoText) {
+          if (promoText[3] === "st") {
+            return promoText[1] + promoText[2];
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
+    splashDecimal(): any {
+      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
+        let promoText: any;
+        const regex = /\d+ för \d+(.+)/g;
+
+        promoText = regex.exec(
+          this.receivedProducts[this.productIndex].potentialPromotions[0]
+            .description
+        );
+        return promoText[1];
       } else {
         return false;
       }
@@ -460,7 +540,6 @@ export default Vue.extend({
 </style>
 
 <style lang="sass" scoped>
-
 .card
   display: flex
   flex-direction: column
@@ -473,6 +552,12 @@ export default Vue.extend({
   background-color: white
   padding: 15px
   color: #333
+
+  .pricing
+    flex-grow: 1
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
 
   .product-labels
     position: absolute
@@ -550,7 +635,6 @@ export default Vue.extend({
     padding: 2px 10px
 
   .consumer-info
-    flex-grow: 1
     font-size: 14px
     color: rgb(170, 170, 170)
     margin-bottom: 10px
@@ -570,6 +654,7 @@ export default Vue.extend({
 
   .promo-price
     display: inline-block
+    margin-right: 0.25em;
     color: rgb(255, 51, 0)
 
   .pick-price
