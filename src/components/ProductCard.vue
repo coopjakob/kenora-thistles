@@ -31,6 +31,7 @@
     <div class="product-summary">
       <img
         v-if="isSweden"
+        class="flag"
         src="https://www.coop.se/assets/icons/flag-sweden.svg"
         alt="Sverige"
         width="16"
@@ -623,6 +624,8 @@ export default Vue.extend({
     font-size: 12px
     margin-bottom: 15px
 
+  .flag
+    margin-right: 0.25em
   .brand
     font-weight: bold
 
