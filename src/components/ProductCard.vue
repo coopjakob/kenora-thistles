@@ -35,12 +35,13 @@
         alt="Sverige"
         width="16"
         height="10"
-      />&nbsp; <span class="brand">{{ brand }}.</span>
-      {{ packageSizeInformation }}. Jmf-pris {{ comparisonPrice }}.
+      />
+      <span class="brand">{{ brand }}.</span> {{ packageSizeInformation }}.
+      Jmf-pris {{ comparisonPrice }}.
       <span
         v-if="receivedProducts[productIndex].depositPrice.value"
         class="deposit"
-        >Pant&nbsp;{{ deposit }}</span
+        >Pant {{ deposit }}</span
       >
     </div>
 
@@ -446,7 +447,10 @@ export default Vue.extend({
     },
     isPromo() {
       let index = this.productIndex;
-      if (this.receivedProducts[index].promotionPrice !== undefined) {
+      if (this.receivedProducts[index].promotionPrice) {
+        window.console.log(
+          "This was a promo: " + this.receivedProducts[index].name
+        );
         return true;
       } else {
         return false;
@@ -643,6 +647,7 @@ export default Vue.extend({
     font-size: 12px
     color: rgb(153, 153, 153)
     font-style: italic
+    white-space: nowrap
 
   .max-use
     font-size: 12px
