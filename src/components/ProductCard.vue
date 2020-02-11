@@ -1,81 +1,106 @@
 <template>
-  <div>
-    <div
-      class="product-card"
-      :class="{ added: added }"
-      @mousedown="reach"
-      @mouseup="withdraw"
-    >
-      <div class="placeholder">
-        <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
-      </div>
-      <div class="gear">
-        <svg
-          v-if="added"
-          width="30"
-          height="30"
-          viewBox="0 0 63 63"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 31.5C0 14.103 14.103 0 31.5 0V0C48.897 0 63 14.103 63 31.5V31.5C63 48.897 48.897 63 31.5 63V63C14.103 63 0 48.897 0 31.5V31.5Z"
-            fill="#00AA46"
-          />
-          <path d="M12 33L26.5 45L48.5 17" stroke="white" stroke-width="8" />
-        </svg>
-      </div>
-      <div class="labels">
-        <template v-if="!added">
-          <div
-            v-for="label in receivedProducts[productIndex].productLabels"
-            :key="label.code"
-          >
-            <img :src="label.icon" width="30" />
-          </div>
-          <img
-            v-if="isSweden"
-            width="30"
-            alt="flag-sweden"
-            src="../assets/flag-sweden.svg"
-          />
-        </template>
-      </div>
-      <div v-if="!added" class="splash">
-        <img
-          src="https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg"
-        />
-        <div class="description">
-          {{ promoDescription }}
-        </div>
-      </div>
-      <div v-if="!added" class="price" :class="{ 'is-promo': isPromo() }">
-        <div v-if="isMedmera" class="pill">Medlemspris</div>
-        <div v-if="maxUseText" class="max-use-text">{{ maxUseText }}</div>
-        <span v-if="promoPrice" class="promotion-price">
-          {{ promoPrice }} <span class="unit">kr/st </span>
-        </span>
-        <span :class="{ strikeout: isPromo() }">
-          <span class="formatted-value">{{ price }}</span>
-          <span class="unit"> kr/st</span>
-        </span>
+  <div class="card">
+    <div class="product-labels">
+      <div
+        v-for="label in receivedProducts[productIndex].productLabels"
+        :key="label.code"
+      >
+        <img :src="label.icon" />
       </div>
     </div>
-    <button v-if="qty === 0" @click="updateCart(1)">Lägg till</button>
-    <div v-if="qty > 0" class="add-to-cart">
-      <button value="-" :disabled="qty == 0" @click="updateCart(qty - 1)">
-        -
-      </button>
-      <!-- <input v-model.number="qty" type="number" min="0" max="999" /> -->
-      <input
-        type="number"
-        min="0"
-        max="999"
-        :placeholder="qty"
-        @keydown.enter="updateCartInput"
-      />
-      <!-- <input v-model.number="updateCartModel" type="number" min="0" max="999" :placeholder="qty"/> -->
-      <button value="+" @click="updateCart(qty + 1)">+</button>
+    <div class="product-image">
+      <img :src="imgSrc" :title="imgAlt" :alt="imgAlt" />
+    </div>
+
+    <div class="splash">
+      <div v-if="promoDescription" class="promo-text">
+        {{ promoDescription }}
+      </div>
+      <div class="price">
+        ##<span class="unit"> /xx</span>
+        <span class="decimal">##</span>
+      </div>
+    </div>
+
+    <div class="product-name">
+      {{ name }}
+    </div>
+
+    <div class="product-summary">
+      <img
+        v-if="isSweden"
+        src="https://www.coop.se/assets/icons/flag-sweden.svg"
+        alt="Sverige"
+        width="16"
+        height="10"
+      />&nbsp; <span class="brand">{{ brand }}.</span>
+      {{ packageSizeInformation }}. Jmf-pris {{ comparisonPrice }}.
+      <span
+        v-if="receivedProducts[productIndex].depositPrice.value"
+        class="deposit"
+        >Pant&nbsp;{{ deposit }}</span
+      >
+    </div>
+
+    <div
+      v-for="(theInfo, index) in consumerInfo"
+      :key="index"
+      class="consumer-info"
+    >
+      {{ theInfo }}
+    </div>
+
+    <div v-if="isMedmera" class="members-only">
+      Medlemspris
+    </div>
+
+    <div v-if="maxUseText" class="max-use">
+      {{ maxUseText }}
+    </div>
+
+    <div class="product-price" :class="{ 'is-promo': promoPrice }">
+      <div v-if="promoPrice" class="promo-price">
+        {{ promoPrice }}:-<span class="unit">/xx</span>
+      </div>
+      <div class="pick-price">{{ price }}<span class="unit">/xx</span></div>
+    </div>
+
+    <div class="action">
+      <div
+        v-if="qty === 0"
+        class="add-to-cart"
+        tabindex="0"
+        role="button"
+        aria-pressed="false"
+        @click="updateCart(1)"
+      >
+        <span>Lägg till</span>
+      </div>
+      <div v-else class="qty-selector" aria-label="Minska antalet">
+        <button class="add" @click="updateCart(qty - 1)">
+          <img
+            width="11"
+            src="https://www.coop.se/Assets/Icons/sprite/minus-white.svg?version=@{cache-version}"
+          />
+        </button>
+        <input
+          type="number"
+          min="0"
+          max="999"
+          :placeholder="qty"
+          @keydown.enter="updateCartInput"
+        />
+        <button
+          class="remove"
+          aria-label="Öka antalet"
+          @click="updateCart(qty + 1)"
+        >
+          <img
+            width="11"
+            src="https://www.coop.se/Assets/Icons/sprite/plus-white.svg?version=@{cache-version}"
+          />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -178,6 +203,23 @@ export default Vue.extend({
     },
     name(): string {
       return this.receivedProducts[this.productIndex].name;
+    },
+    brand(): string {
+      return this.receivedProducts[this.productIndex].manufacturer;
+    },
+    packageSizeInformation(): string {
+      return this.receivedProducts[this.productIndex].packageSizeInformation;
+    },
+    comparisonPrice(): string {
+      return this.receivedProducts[this.productIndex].comparisonPrice
+        .formattedValue;
+    },
+    deposit(): string {
+      return this.receivedProducts[this.productIndex].depositPrice
+        .formattedValue;
+    },
+    consumerInfo(): string {
+      return this.receivedProducts[this.productIndex].consumerInformationText;
     },
     isSweden(): string {
       return this.receivedProducts[this.productIndex].fromSweden;
@@ -417,96 +459,202 @@ export default Vue.extend({
 }
 </style>
 
-<style lang="less" scoped>
-.product-card {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: space-between;
-  /* flex-grow: 1; */
-  /* flex-shrink: 1; */
-  width: 200px;
-  height: 300px;
-  /* flex-basis: 10rem; */
-  /* min-width: 10rem; */
-  /* max-width: 16rem; */
-  /* border: thin solid silver; */
-  border-radius: 1rem;
-  overflow: hidden;
-  margin: 0.5rem;
-  background-color: white;
-}
-.labels {
-  position: absolute;
-  left: 0;
-  top: 0.5rem;
-  width: 25%;
-}
-.placeholder {
-  margin: 1rem;
-  transition: transform 0.05s linear; // slow start
-  transform: scale(0.75);
-}
-.added .placeholder {
-  transform: scale(1);
-}
-.placeholder img {
-  display: block;
-  max-width: 100%;
-}
-.pill {
-  font-size: 0.75rem;
-  font-weight: bold;
-  display: inline-block;
-  color: #005537;
-  background-color: #aad23c;
-  border-radius: 999px;
-  padding: 2px 10px;
-}
-.price {
-  font-size: 1.1rem;
-  text-align: right;
-  margin: 0.5rem;
-}
-.promotion-price {
-  color: red;
-  font-weight: bold;
-}
-.price.is-promo .formatted-value {
-  /* text-decoration: line-through; */
-  font-size: 0.9rem;
-}
-.unit {
-  font-size: 0.9rem;
-}
-.strikeout {
-  // display: none;
-  position: relative;
-}
-.strikeout::after {
-  border-bottom: 2px solid black;
-  content: "";
-  left: 0;
-  line-height: 1em;
-  /* margin-top: calc(0.125em / 2 * -1); */
-  position: absolute;
-  right: 0;
-  top: 50%;
-}
-.gear {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  margin-bottom: 0.25rem;
-}
-.add-to-cart {
-  input {
-    text-align: center;
-  }
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-}
+<style lang="sass" scoped>
+
+.card
+  display: flex
+  flex-direction: column
+  position: relative
+  min-width: 145px
+  max-width: 200px
+  flex-basis: 145px
+  flex-grow: 1
+  margin: 1px
+  background-color: white
+  padding: 15px
+  color: #333
+
+  .product-labels
+    position: absolute
+    top: 10px
+    left: 10px
+    width: 30px
+
+    img
+      width: 100%
+
+  .product-image
+    width: 100%
+    margin-bottom: 10px
+
+    img
+      width: 100%
+
+  .splash
+    display: flex
+    flex-direction: column
+    justify-content: center
+    width: 64px
+    height: 47px
+    position: absolute
+    top: 10px
+    right: 10px
+    font-family: 'CoopNew-Black', sans-serif
+    text-align: center
+    font-size: 22px
+    color: rgb(255, 51, 0)
+    background-image: url('https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg')
+    background-size: contain
+
+    .promo-text
+      font-size: 10px
+      text-align: center
+      margin-bottom: -3px
+
+    .price
+      display: inline-block
+      align-self: flex-start
+      position: relative
+      margin: 0 auto
+
+    .decimal
+      position: absolute
+      top: 0
+      right: 0
+      font-size: 10px
+
+    .unit
+      font-size: 10px
+
+  .product-name
+    font-size: 16px
+    margin-bottom: 7px
+
+  .product-summary
+    font-size: 12px
+    margin-bottom: 15px
+
+  .brand
+    font-weight: bold
+
+  .members-only
+    margin-bottom: 10px
+    align-self: flex-start
+
+    font-size: 12px
+    font-weight: bold
+    display: inline-block
+    color: rgb(0, 85, 55)
+    background-color: rgb(170, 210, 60)
+    border-radius: 999px
+    padding: 2px 10px
+
+  .consumer-info
+    flex-grow: 1
+    font-size: 14px
+    color: rgb(170, 170, 170)
+    margin-bottom: 10px
+
+  .deposit
+    font-size: 12px
+    color: rgb(153, 153, 153)
+    font-style: italic
+
+  .max-use
+    font-size: 12px
+    color: rgb(255, 51, 0)
+
+  .product-price
+    font-size: 20px
+    margin-bottom: 10px
+
+  .promo-price
+    display: inline-block
+    color: rgb(255, 51, 0)
+
+  .pick-price
+    display: inline-block
+
+  .is-promo .pick-price
+    font-size: 12px
+    color: rgb(74, 74, 74)
+    text-decoration-line: line-through
+
+  .is-promo .unit
+    font-size: 14px
+
+  .is-promo .pick-price .unit
+    font-size: inherit
+
+  .pick-price .unit
+    font-size: 14px
+
+  .action
+    display: flex
+    justify-content: center
+    align-items: stretch
+
+    width: 100%
+    height: 40px
+    border-radius: 20px
+    background-color: #00aa46
+
+  .add-to-cart
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-grow: 1
+    color: white
+    cursor: pointer
+
+  .qty-selector
+    display: flex
+    justify-content: space-between
+    flex-grow: 1
+    padding: 3px
+
+    .add, .remove
+      display: flex
+      width: 34px
+      height: 34px
+      justify-content: center
+      align-items: center
+      border: 0
+      outline: 0
+      border-radius: 50%
+      cursor: pointer
+
+    .add:focus, .remove:focus
+      border: 1px solid white
+
+    .add
+      background-color: rgba(0,85,55,.3)
+
+    .remove
+      background-color: #005537
+
+    input
+      width: 34px
+      height: 32px
+      flex-grow: 1
+      color: white
+      text-align: center
+      font-size: 16px
+      background: transparent
+      border: none
+      outline: none
+
+      &::placeholder  /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: white
+        opacity: 1 /* Firefox */
+
+      &:-ms-input-placeholder /* Internet Explorer 10-11 */
+        color: white
+
+      &::-ms-input-placeholder /* Microsoft Edge */
+        color: white
+
+  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button
+    -webkit-appearance: none
+    margin: 0
 </style>
