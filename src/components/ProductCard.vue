@@ -13,14 +13,10 @@
     </div>
 
     <div class="splash">
-      <div v-if="splashText" class="promo-text">
-        {{ splashText }}
-      </div>
-      <div v-if="splashTextPrice" class="price">
-        {{ splashTextPrice }}
-      </div>
-      <div v-else class="price">
-        {{ splashPrice }}
+      <div class="promo-text">{{ splash.label }}</div>
+      <div class="price">
+        {{ splash.price }}<span class="unit">{{ splash.unit }}</span>
+        <span v-if="splash.decimal" class="decimal">{{ splash.decimal }}</span>
       </div>
     </div>
 
@@ -65,7 +61,7 @@
 
       <div class="product-price" :class="{ 'is-promo': promoPrice }">
         <div v-if="promoPrice" class="promo-price">
-          {{ promoPrice }}:-<span class="unit">/st</span>
+          {{ promoPrice }}<span class="unit">/st</span>
         </div>
         <div class="pick-price">{{ price }}<span class="unit">/st</span></div>
       </div>
@@ -241,6 +237,47 @@ export default Vue.extend({
         return false;
       }
     },
+    splash(): any {
+      if (!this.receivedProducts[this.productIndex].potentialPromotions[0]) {
+        return false;
+      }
+
+      let parts: any;
+      const regex = /(?<label>\d+ för )*(?<price>\d+):(?<decimal>[-\d]+) *\/*(?<unit>.*)/g;
+      // https://regex101.com/
+
+      parts = regex.exec(
+        this.receivedProducts[this.productIndex].potentialPromotions[0]
+          .description
+      );
+
+      if (!parts) {
+        window.console.error("Kan inte lista ut erbjudandet i splash");
+        return false;
+      }
+
+      let label = parts[1];
+      let price = parts[2];
+      let decimal = parts[3];
+      let unit = parts[4];
+
+      if (unit == "st" && decimal == "-") {
+        price = price + ":-";
+        decimal = "";
+        unit = "";
+      }
+
+      if (unit == "" && decimal == "-") {
+        price = price + ":-";
+        decimal = "";
+      }
+
+      if (unit != "") {
+        unit = "/" + unit;
+      }
+
+      return { label, price, decimal, unit };
+    },
     splashText(): any {
       if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
         let promoText: any;
@@ -324,14 +361,14 @@ export default Vue.extend({
     },
     price(): string {
       let price = this.receivedProducts[this.productIndex].price.formattedValue;
-      price = price.replace(":-", "");
+      //price = price.replace(":-", "");
       return price;
     },
     promoPrice(): any {
       const index = this.productIndex;
       if (this.isPromo()) {
         let price = this.receivedProducts[index].promotionPrice.formattedValue;
-        price = price.replace(":-", "");
+        //price = price.replace(":-", "");
         return price;
       } else {
         return false;
