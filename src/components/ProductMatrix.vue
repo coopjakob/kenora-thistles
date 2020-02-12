@@ -2,11 +2,11 @@
   <div class="product-matrix">
     <div v-if="error">{{ error }}</div>
     <ProductCard
-      v-for="product in productList.slice(0, columns * rows)"
+      v-for="product in limitList"
       :id="product.code"
       :key="product.code"
     />
-    <div v-for="n in leftToShow" :key="n" class="fill-last-row"></div>
+    <div v-for="n in fillersNeeded" :key="n" class="fill-last-row"></div>
     <button
       v-if="leftToShow > 0"
       style="width:100%; margin: 10px 30%; padding: 10px; border-radius:999px"
@@ -53,6 +53,22 @@ export default Vue.extend({
   computed: {
     leftToShow(): number {
       return this.productList.length - this.columns * this.rows;
+    },
+    limitList(): Array<any> {
+      let slice = Math.min(this.columns * this.rows, this.productList.length); //??
+      window.console.debug("slice:", slice);
+      return Object.entries(this.productList)
+        .slice(0, slice)
+        .map(entry => entry[1]);
+    },
+    fillersNeeded(): Number {
+      let itemsOnLastRow = this.limitList.length % this.columns;
+
+      if (itemsOnLastRow == 0) {
+        return 0;
+      } else {
+        return this.columns - itemsOnLastRow;
+      }
     },
     rcs(): any {
       // dev
@@ -106,31 +122,33 @@ export default Vue.extend({
     getWidth() {
       this.width = this.$parent.$el.clientWidth;
 
-      if (this.width >= 3 * 147) {
+      if (this.width > 3 * 147) {
         this.columns = 3;
         this.rows = 2;
       }
 
-      if (this.width >= 4 * 147) {
+      if (this.width > 4 * 147) {
         this.columns = 4;
         this.rows = 2;
+        // placement = "desktop"
       }
 
-      if (this.width >= 5 * 147) {
+      if (this.width > 5 * 147) {
         this.columns = 5;
         this.rows = 2;
       }
-      if (this.width >= 6 * 147) {
+
+      if (this.width > 6 * 147) {
         this.columns = 6;
         this.rows = 2;
       }
 
-      if (this.width >= 7 * 147) {
+      if (this.width > 7 * 147) {
         this.columns = 7;
         this.rows = 2;
       }
 
-      if (this.width >= 8 * 147) {
+      if (this.width > 8 * 147) {
         this.columns = 8;
         this.rows = 2;
       }
@@ -162,6 +180,7 @@ export default Vue.extend({
   max-width: 200px;
   flex-basis: 115px;
   flex-grow: 1;
+  margin: 1px;
   padding: 0 15px;
 }
 // .product-matrix::after {

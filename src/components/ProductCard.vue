@@ -629,8 +629,8 @@ export default Vue.extend({
 
     .decimal
       position: absolute
-      top: 0
-      right: 0
+      top: 2px
+      right: 3px
       font-size: 10px
 
     .unit
