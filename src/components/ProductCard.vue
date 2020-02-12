@@ -563,32 +563,15 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="less">
-.splash {
-  position: absolute;
-  width: 64px;
-  height: 47px;
-  right: 0;
-  margin: 0.5rem;
-  img {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-  .description {
-    position: absolute;
-  }
-}
-</style>
-
 <style lang="sass" scoped>
 .card
   display: flex
   flex-direction: column
   position: relative
-  min-width: 145px
+  // box-sizing: border-box;
+  min-width: 115px
   max-width: 200px
-  flex-basis: 145px
+  flex-basis: 115px
   flex-grow: 1
   margin: 1px
   background-color: white
@@ -626,7 +609,7 @@ export default Vue.extend({
     position: absolute
     top: 10px
     right: 10px
-    font-family: 'CoopNew-Black', sans-serif
+    font-family: 'Coop New', 'CoopNew-Black', sans-serif
     text-align: center
     font-size: 22px
     color: rgb(255, 51, 0)

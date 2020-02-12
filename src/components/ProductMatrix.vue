@@ -1,9 +1,19 @@
 <template>
   <div class="product-matrix">
     <div v-if="error">{{ error }}</div>
-    <template v-for="product in productList">
-      <ProductCard :id="product.code" :key="product.code" />
-    </template>
+    <ProductCard
+      v-for="product in productList.slice(0, columns * rows)"
+      :id="product.code"
+      :key="product.code"
+    />
+    <div v-for="n in leftToShow" :key="n" class="fill-last-row"></div>
+    <button
+      v-if="leftToShow > 0"
+      style="width:100%; margin: 10px 30%; padding: 10px; border-radius:999px"
+      @click="rows += 2"
+    >
+      Visa mer ({{ leftToShow }} kvar)
+    </button>
   </div>
 </template>
 
@@ -33,11 +43,17 @@ export default Vue.extend({
     return {
       productList: Array,
       error: "",
-      placement: "home_page.horizontal_recs1"
+      placement: "home_page.horizontal_recs1",
       // test: COOP.config
+      columns: 2,
+      rows: 2,
+      width: 0
     };
   },
   computed: {
+    leftToShow(): number {
+      return this.productList.length - this.columns * this.rows;
+    },
     rcs(): any {
       // dev
       sessionStorage.setItem(
@@ -64,6 +80,11 @@ export default Vue.extend({
     }
   },
   mounted() {
+    this.getWidth();
+    window.addEventListener("resize", this.getWidth);
+
+    window.console.debug(this.columns + "x" + this.rows);
+
     axios
       .get(
         // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=generic_page.generic_recs1"
@@ -82,6 +103,38 @@ export default Vue.extend({
       .catch(error => (this.error = error));
   },
   methods: {
+    getWidth() {
+      this.width = this.$parent.$el.clientWidth;
+
+      if (this.width >= 3 * 147) {
+        this.columns = 3;
+        this.rows = 2;
+      }
+
+      if (this.width >= 4 * 147) {
+        this.columns = 4;
+        this.rows = 2;
+      }
+
+      if (this.width >= 5 * 147) {
+        this.columns = 5;
+        this.rows = 2;
+      }
+      if (this.width >= 6 * 147) {
+        this.columns = 6;
+        this.rows = 2;
+      }
+
+      if (this.width >= 7 * 147) {
+        this.columns = 7;
+        this.rows = 2;
+      }
+
+      if (this.width >= 8 * 147) {
+        this.columns = 8;
+        this.rows = 2;
+      }
+    },
     getCookieValue(name: string) {
       let value: any;
       if (document.cookie) {
@@ -102,8 +155,37 @@ export default Vue.extend({
   // justify-content: space-between;
   // align-items: stretch;
 }
+
+.fill-last-row {
+  // box-sizing: border-box;
+  min-width: 115px;
+  max-width: 200px;
+  flex-basis: 115px;
+  flex-grow: 1;
+  padding: 0 15px;
+}
 // .product-matrix::after {
 //   content: "";
 //   flex: auto;
+// }
+
+// .card {
+//   order: 1;
+// }
+// .card:nth-child(n + 5) {
+//   order: 2;
+// }
+// .card:nth-child(n + 9) {
+//   order: 3;
+// }
+// .product-matrix::before {
+//   content: "1";
+//   width: 100%;
+//   order: 2;
+// }
+// .product-matrix::after {
+//   content: "2";
+//   width: 100%;
+//   order: 2;
 // }
 </style>
