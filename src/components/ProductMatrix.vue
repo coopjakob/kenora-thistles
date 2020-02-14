@@ -2,18 +2,23 @@
   <div class="product-matrix">
     <div v-if="error">{{ error }}</div>
     <ProductCard
-      v-for="product in limitList"
+      v-for="product in productList"
+      :id="product.code"
+      :key="product.code"
+    />
+    <button
+      v-if="productListFull.length === 0"
+      style="width:100%; margin: 10px 30%; padding: 10px; border-radius:999px"
+      @click="addMore"
+    >
+      Visa mer
+    </button>
+    <ProductCard
+      v-for="product in productListFull"
       :id="product.code"
       :key="product.code"
     />
     <div v-for="n in fillersNeeded" :key="n" class="fill-last-row"></div>
-    <button
-      v-if="leftToShow > 0"
-      style="width:100%; margin: 10px 30%; padding: 10px; border-radius:999px"
-      @click="rows += 2"
-    >
-      Visa mer ({{ leftToShow }} kvar)
-    </button>
   </div>
 </template>
 
@@ -41,9 +46,10 @@ export default Vue.extend({
   data() {
     COOP = this.$store.state;
     return {
-      productList: Array,
+      productList: [],
+      productListFull: [],
       error: "",
-      placement: "home_page.horizontal_recs1",
+      placement: "", // "home_page.mobile_horizontal_recs1",
       // test: COOP.config
       columns: 2,
       rows: 2,
@@ -62,7 +68,8 @@ export default Vue.extend({
         .map(entry => entry[1]);
     },
     fillersNeeded(): Number {
-      let itemsOnLastRow = this.limitList.length % this.columns;
+      let itemsOnLastRow =
+        (this.productList.length + this.productListFull.length) % this.columns;
 
       if (itemsOnLastRow == 0) {
         return 0;
@@ -97,7 +104,7 @@ export default Vue.extend({
   },
   mounted() {
     this.getWidth();
-    window.addEventListener("resize", this.getWidth);
+    // window.addEventListener("resize", this.getWidth);
 
     window.console.debug(this.columns + "x" + this.rows);
 
@@ -107,7 +114,7 @@ export default Vue.extend({
         // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=home_page.horizontal_recs1"
         // https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1%257Chome_page.horizontal_recs2%257Chome_page.horizontal_recs1%257Chome_page.horizontal_recs1&fields=DEFAULT
         // &currentPage=0&pageSize=6&storeId=016001&rrSessionId=s91829745064064&rcs=eF5jYSlN9kg2SU6xtLBM0k00SzPRNTFOTdM1Sks21zUyME1KMzdNNDAzTOXKLSvJTBEwNDe21DXUNQQArgQO0g
-        `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=${this.placement}&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`
+        `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.2020_start_few&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`
       )
       .then(response => {
         this.productList = Vue.prototype.$receivedProducts =
@@ -119,6 +126,25 @@ export default Vue.extend({
       .catch(error => (this.error = error));
   },
   methods: {
+    addMore() {
+      axios
+        .get(
+          // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=generic_page.generic_recs1"
+          // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=home_page.horizontal_recs1"
+          // https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1%257Chome_page.horizontal_recs2%257Chome_page.horizontal_recs1%257Chome_page.horizontal_recs1&fields=DEFAULT
+          // &currentPage=0&pageSize=6&storeId=016001&rrSessionId=s91829745064064&rcs=eF5jYSlN9kg2SU6xtLBM0k00SzPRNTFOTdM1Sks21zUyME1KMzdNNDAzTOXKLSvJTBEwNDe21DXUNQQArgQO0g
+          `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.2020_start_full&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`
+        )
+        .then(response => {
+          let productsInResponse = response.data.placements[0].products;
+          // this.productList.concat(productsInResponse);
+          // this.productList = [ ...this.productList, ...productsInResponse];
+          // this.productList = this.productList.push(...productsInResponse);
+          Vue.prototype.$receivedProducts = productsInResponse;
+          return (this.productListFull = productsInResponse);
+        })
+        .catch(error => (this.error = error));
+    },
     getWidth() {
       this.width = this.$parent.$el.clientWidth;
 
@@ -127,10 +153,11 @@ export default Vue.extend({
         this.rows = 2;
       }
 
-      if (this.width > 4 * 147) {
+      if (this.width >= 4 * 147) {
         this.columns = 4;
         this.rows = 2;
-        // placement = "desktop"
+        // this.placement = "home_page.2020_start_full"; //"home_page.horizontal_recs1"'
+        this.addMore();
       }
 
       if (this.width > 5 * 147) {

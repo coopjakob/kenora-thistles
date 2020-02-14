@@ -9,10 +9,12 @@
       </div>
     </div>
     <div class="product-image">
-      <a :href="url" :title="imgAlt"><img :src="imgSrc" :alt="imgAlt"/></a>
+      <a :href="url" :title="imgAlt"
+        ><img width="200" height="200" :src="imgSrc" :alt="imgAlt"
+      /></a>
     </div>
 
-    <div class="splash">
+    <div v-if="splash" class="splash">
       <div class="promo-text">{{ splash.label }}</div>
       <div class="price">
         {{ splash.price }}<span class="unit">{{ splash.unit }}</span>
@@ -599,6 +601,7 @@ export default Vue.extend({
 
     img
       width: 100%
+      height: auto
 
   .splash
     display: flex
