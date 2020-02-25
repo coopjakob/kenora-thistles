@@ -75,7 +75,7 @@
 
       <div class="action">
         <div
-          v-if="qty === 0"
+          v-if="qty === 999"
           class="add-to-cart js-qty-selector-plus"
           tabindex="0"
           role="button"
@@ -84,7 +84,7 @@
         >
           <span>Lägg till</span>
         </div>
-        <div v-else class="add-to-cart qty-selector js-qty-selector">
+        <div class="add-to-cart qty-selector js-qty-selector">
           <button
             class="add js-qty-selector-minus"
             aria-label="Minska antalet"
