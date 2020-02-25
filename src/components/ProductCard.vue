@@ -46,7 +46,7 @@
 
     <div
       v-for="(theInfo, index) in consumerInfo"
-      :key="index"
+      :key="index + theInfo"
       class="consumer-info"
     >
       {{ theInfo }}
