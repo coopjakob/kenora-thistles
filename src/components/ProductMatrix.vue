@@ -44,7 +44,7 @@ export default Vue.extend({
     ProductCard
   },
   data() {
-    COOP = this.$store.state;
+    // COOP = this.$store.state;
     return {
       productList: [],
       productListFull: [],

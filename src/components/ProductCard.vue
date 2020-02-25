@@ -142,7 +142,7 @@ export default Vue.extend({
     }
   },
   data() {
-    COOP = this.$store.state;
+    // COOP = this.$store.state;
     return {
       added: false,
       isAdding: false,
