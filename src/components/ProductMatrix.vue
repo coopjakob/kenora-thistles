@@ -35,8 +35,8 @@ Vue.use(VueAxios, axios);
 
 //dev
 let COOP: any;
-// COOP = [];
-// COOP.config = [];
+COOP = [];
+COOP.config = [];
 // let COOP = this.$store.state;
 
 export default Vue.extend({

@@ -129,8 +129,8 @@ Vue.use(VueAxios, axios);
 
 //dev
 let COOP: any;
-// COOP = [];
-// COOP.config = [];
+COOP = [];
+COOP.config = [];
 
 export default Vue.extend({
   props: {
