@@ -46,7 +46,7 @@ export default Vue.extend({
   data() {
     // COOP = this.$store.state;
     return {
-      productList: [],
+      productList: [] as any[],
       productListFull: [],
       error: "",
       placement: "", // "home_page.mobile_horizontal_recs1",
@@ -138,7 +138,7 @@ export default Vue.extend({
         .then(response => {
           let productsInResponse = response.data.placements[0].products;
           // this.productList.concat(productsInResponse);
-          // this.productList = [ ...this.productList, ...productsInResponse];
+          this.productList = [...this.productList, ...productsInResponse];
           // this.productList = this.productList.push(...productsInResponse);
           Vue.prototype.$receivedProducts = productsInResponse;
           return (this.productListFull = productsInResponse);
