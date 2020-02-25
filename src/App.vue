@@ -27,6 +27,7 @@ body {
 }
 #app {
   font-family: "Akkurat", "Roboto", Helvetica, Arial, sans-serif;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

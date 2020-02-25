@@ -52,7 +52,12 @@
       {{ theInfo }}
     </div>
 
-    <div class="pricing">
+    <div
+      class="pricing"
+      :data-product="this.id"
+      data-category-lvl-1="0"
+      data-category-lvl-3="0"
+    >
       <div v-if="isMedmera" class="members-only">
         Medlemspris
       </div>
@@ -71,7 +76,7 @@
       <div class="action">
         <div
           v-if="qty === 0"
-          class="add-to-cart"
+          class="add-to-cart js-qty-selector-plus"
           tabindex="0"
           role="button"
           aria-pressed="false"
@@ -80,7 +85,7 @@
           <span>Lägg till</span>
         </div>
         <div v-else class="qty-selector" aria-label="Minska antalet">
-          <button class="add" @click="updateCart(qty - 1)">
+          <button class="add js-qty-selector-plus" @click="updateCart(qty - 1)">
             <img
               width="11"
               src="https://www.coop.se/Assets/Icons/sprite/minus-white.svg?version=@{cache-version}"
@@ -94,7 +99,7 @@
             @keydown.enter="updateCartInput"
           />
           <button
-            class="remove"
+            class="remove js-qty-selector-minus"
             aria-label="Öka antalet"
             @click="updateCart(qty + 1)"
           >
