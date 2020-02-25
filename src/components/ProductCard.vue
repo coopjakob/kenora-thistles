@@ -84,7 +84,7 @@
         >
           <span>Lägg till</span>
         </div>
-        <div v-else class="qty-selector js-qty-selector">
+        <div v-else class="add-to-cart qty-selector js-qty-selector">
           <button
             class="add js-qty-selector-minus"
             aria-label="Minska antalet"
