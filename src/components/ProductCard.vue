@@ -139,7 +139,10 @@ let COOP = {
     cartData: {
       entries: [
         {
-          quantity: 0
+          quantity: 0,
+          product: {
+            code: 0
+          }
         }
       ]
     }
@@ -170,27 +173,23 @@ export default Vue.extend({
     // TODO: need to reorder the flow, including test data
     qty: {
       get: function() {
-        let quantityFromCartIndex = COOP.minicart.cartData.entries.findIndex(
+        let index = COOP.minicart.cartData.entries.findIndex(
           (entry: any) => entry.product.code === this.id
         );
 
-        if (quantityFromCartIndex) {
-          window.console.debug("quantityFromCartIndex:", quantityFromCartIndex);
+        window.console.debug("index:", index);
 
-          if (quantityFromCartIndex > 0) {
-            window.console.debug("quantity exist in cart product, get old");
-            if (COOP.minicart.cartData.entries[quantityFromCartIndex]) {
-              return COOP.minicart.cartData.entries[quantityFromCartIndex]
-                .quantity;
-            } else {
-              return 0;
-            }
-          }
+        if (index > -1) {
+          window.console.debug("quantity exist in cart product, get old");
+          return COOP.minicart.cartData.entries[index].quantity;
+        } else {
+          return 0;
         }
-        let returnValue = this.savedQuantity as number;
-        // return 0;
-        // Dev, if not in cart
-        return returnValue;
+
+        // let returnValue = this.savedQuantity as number;
+        // // return 0;
+        // // Dev, if not in cart
+        // return returnValue;
       },
       set: function(value: number) {
         this.savedQuantity = value;
