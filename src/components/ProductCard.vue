@@ -84,22 +84,28 @@
         >
           <span>Lägg till</span>
         </div>
-        <div v-else class="qty-selector" aria-label="Minska antalet">
-          <button class="add js-qty-selector-plus" @click="updateCart(qty - 1)">
+        <div v-else class="qty-selector js-qty-selector">
+          <button
+            class="add js-qty-selector-minus"
+            aria-label="Minska antalet"
+            @click="updateCart(qty - 1)"
+          >
             <img
               width="11"
               src="https://www.coop.se/Assets/Icons/sprite/minus-white.svg?version=@{cache-version}"
             />
           </button>
           <input
+            class="js-qty-selector-input"
             type="number"
             min="0"
             max="999"
+            data-max="999"
             :placeholder="qty"
             @keydown.enter="updateCartInput"
           />
           <button
-            class="remove js-qty-selector-minus"
+            class="remove js-qty-selector-plus"
             aria-label="Öka antalet"
             @click="updateCart(qty + 1)"
           >
@@ -550,17 +556,17 @@ export default Vue.extend({
       // params.append('code', '7300156585899');
       // params.append('qty', qty);
 
-      axios
-        .post(
-          `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}/products`,
-          `code=${this.id}&qty=${this.qty}`
-        )
-        .then(function(response) {
-          window.console.debug(response);
-        })
-        .catch(function(error) {
-          window.console.debug(error);
-        });
+      // axios
+      //   .post(
+      //     `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}/products`,
+      //     `code=${this.id}&qty=${this.qty}`
+      //   )
+      //   .then(function(response) {
+      //     window.console.debug(response);
+      //   })
+      //   .catch(function(error) {
+      //     window.console.debug(error);
+      //   });
 
       // axios.post(
       // 'https://www.coop.se/api/hybris/carts/current/items',
