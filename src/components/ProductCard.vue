@@ -128,9 +128,19 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
 //dev
-let COOP: any;
-COOP = [];
-COOP.config = [];
+let COOP = {
+  config: {
+    user: "",
+    rrSessionId: "",
+    coopStore: "",
+    cartguid: ""
+  },
+  minicart: {
+    cartData: {
+      entries: []
+    }
+  }
+};
 
 export default Vue.extend({
   props: {
@@ -156,7 +166,7 @@ export default Vue.extend({
     // TODO: need to reorder the flow, including test data
     qty: {
       get: function() {
-        let quantityFromCartIndex = COOP.minicart.entries.findIndex(
+        let quantityFromCartIndex = COOP.minicart.cartData.entries.findIndex(
           (entry: any) => entry.product.code === this.id
         );
 
@@ -164,7 +174,12 @@ export default Vue.extend({
 
         if (quantityFromCartIndex > 0) {
           window.console.debug("quantity exist in cart product, get old");
-          return COOP.minicart.entries[quantityFromCartIndex].quantity;
+          if (COOP.minicart.cartData.entries[quantityFromCartIndex]) {
+            return COOP.minicart.cartData.entries[quantityFromCartIndex]
+              .quantity;
+          } else {
+            return false;
+          }
         }
 
         let returnValue = this.savedQuantity as number;
@@ -175,7 +190,7 @@ export default Vue.extend({
       set: function(value: number) {
         this.savedQuantity = value;
 
-        let quantityFromCartIndex = COOP.minicart.entries.findIndex(
+        let quantityFromCartIndex = COOP.minicart.cartData.entries.findIndex(
           (entry: any) => entry.product.code === this.id
         );
 
@@ -188,7 +203,7 @@ export default Vue.extend({
             "quantity exist in cart product, set new value",
             value
           );
-          COOP.minicart.entries[quantityFromCartIndex].quantity = value;
+          // COOP.minicart.cartData.entries[quantityFromCartIndex].quantity = value;
           // latest from server
           // update here or update on this.savedQuantity?
         }
