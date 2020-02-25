@@ -54,7 +54,7 @@
 
     <div
       class="pricing"
-      :data-product="this.id"
+      :data-product="id"
       data-category-lvl-1="0"
       data-category-lvl-3="0"
     >
@@ -137,7 +137,11 @@ let COOP = {
   },
   minicart: {
     cartData: {
-      entries: []
+      entries: [
+        {
+          quantity: 0
+        }
+      ]
     }
   }
 };
@@ -170,18 +174,19 @@ export default Vue.extend({
           (entry: any) => entry.product.code === this.id
         );
 
-        window.console.debug("quantityFromCartIndex:", quantityFromCartIndex);
+        if (quantityFromCartIndex) {
+          window.console.debug("quantityFromCartIndex:", quantityFromCartIndex);
 
-        if (quantityFromCartIndex > 0) {
-          window.console.debug("quantity exist in cart product, get old");
-          if (COOP.minicart.cartData.entries[quantityFromCartIndex]) {
-            return COOP.minicart.cartData.entries[quantityFromCartIndex]
-              .quantity;
-          } else {
-            return false;
+          if (quantityFromCartIndex > 0) {
+            window.console.debug("quantity exist in cart product, get old");
+            if (COOP.minicart.cartData.entries[quantityFromCartIndex]) {
+              return COOP.minicart.cartData.entries[quantityFromCartIndex]
+                .quantity;
+            } else {
+              return 0;
+            }
           }
         }
-
         let returnValue = this.savedQuantity as number;
         // return 0;
         // Dev, if not in cart
