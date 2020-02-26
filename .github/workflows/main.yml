@@ -1,0 +1,40 @@
+name: Test
+
+on: push
+
+jobs:
+  run:
+    name: Main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linters
+        uses: samuelmeuli/lint-action@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Enable linters
+          eslint: true
+          eslint_extensions: js,vue,ts
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run e2e tests
+        uses: cypress-io/github-action@v1
+        with:
+          start: npm run start
+        # Uncomment the code below when we want to use Cypress Dashboard
+        #   record: true
+        # env:
+        #   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
