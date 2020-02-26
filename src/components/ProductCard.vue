@@ -84,7 +84,12 @@
         >
           <span>Lägg till</span>
         </div>
-        <div class="add-to-cart qty-selector js-qty-selector">
+        <div
+          class="add-to-cart qty-selector js-qty-selector"
+          :data-product="id"
+          data-category-lvl-1="0"
+          data-category-lvl-3="0"
+        >
           <button
             class="add js-qty-selector-minus"
             aria-label="Minska antalet"
