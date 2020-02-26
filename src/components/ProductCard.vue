@@ -45,7 +45,7 @@
     </div>
 
     <div
-      v-for="(theInfo, index) in consumerInfo"
+      v-for="theInfo in consumerInfo"
       :key="theInfo"
       class="consumer-info"
     >
