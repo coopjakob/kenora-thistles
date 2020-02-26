@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" data-testid="productCard">
     <div class="product-labels">
       <div
         v-for="label in receivedProducts[productIndex].productLabels"
