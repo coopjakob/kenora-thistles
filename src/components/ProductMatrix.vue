@@ -7,17 +7,12 @@
       :key="product.code"
     />
     <button
-      v-if="productListFull.length === 0"
+      v-if="productList.length <= 6"
       style="width:100%; margin: 10px 30%; padding: 10px; border-radius:999px"
       @click="addMore"
     >
       Visa mer
     </button>
-    <ProductCard
-      v-for="product in productListFull"
-      :id="product.code"
-      :key="product.code"
-    />
     <div v-for="n in fillersNeeded" :key="n" class="fill-last-row"></div>
   </div>
 </template>
@@ -47,7 +42,6 @@ export default Vue.extend({
     // COOP = this.$store.state;
     return {
       productList: [] as any[],
-      productListFull: [],
       error: "",
       placement: "", // "home_page.mobile_horizontal_recs1",
       // test: COOP.config
@@ -68,8 +62,7 @@ export default Vue.extend({
         .map(entry => entry[1]);
     },
     fillersNeeded(): Number {
-      let itemsOnLastRow =
-        (this.productList.length + this.productListFull.length) % this.columns;
+      let itemsOnLastRow = this.productList.length % this.columns;
 
       if (itemsOnLastRow == 0) {
         return 0;
@@ -140,8 +133,8 @@ export default Vue.extend({
           // this.productList.concat(productsInResponse);
           this.productList = [...this.productList, ...productsInResponse];
           // this.productList = this.productList.push(...productsInResponse);
-          Vue.prototype.$receivedProducts = productsInResponse;
-          return (this.productListFull = productsInResponse);
+          Vue.prototype.$receivedProducts = this.productList;
+          return this.productList;
         })
         .catch(error => (this.error = error));
     },
