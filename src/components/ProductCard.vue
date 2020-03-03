@@ -93,12 +93,12 @@
         >
           <button
             class="remove js-qty-selector-minus"
-            :class="{ 'is-disabled': qty === 0 }"
+            :class="{ 'is-disabled': qty == 0 }"
             aria-label="Minska antalet"
             @click="updateCart(qty - 1)"
           >
             <img
-              width="11"
+              width="14"
               src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+PHBhdGggZD0iTTE5IDkuNUgxIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiLz48L3N2Zz4="
             />
           </button>
@@ -140,7 +140,8 @@ let COOP = {
     user: "",
     rrSessionId: "",
     coopStore: "",
-    cartguid: ""
+    cartguid: "",
+    qty: ""
   },
   minicart: {
     cartData: {
