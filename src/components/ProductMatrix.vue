@@ -121,9 +121,13 @@ export default Vue.extend({
 
     window.console.debug(this.columns + "x" + this.rows);
 
-    const config = {
-      headers: { Authorization: `Bearer ${window.ACC.config.authToken}` }
-    };
+    let config = {};
+
+    if (this.user != "anonymous") {
+      config = {
+        headers: { Authorization: `Bearer ${window.ACC.config.authToken}` }
+      };
+    }
 
     axios
       .get(
@@ -155,9 +159,13 @@ export default Vue.extend({
     addMore() {
       window.console.debug("addMore()");
 
-      const config = {
-        headers: { Authorization: `Bearer ${window.ACC.config.authToken}` }
-      };
+      let config = {};
+
+      if (this.user != "anonymous") {
+        config = {
+          headers: { Authorization: `Bearer ${window.ACC.config.authToken}` }
+        };
+      }
 
       axios
         .get(
