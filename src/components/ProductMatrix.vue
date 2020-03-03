@@ -7,7 +7,7 @@
       :key="product.code"
     />
     <button
-      v-if="productList.length <= 6"
+      v-if="productList.length > 0 && productList.length <= 6"
       style="width:100%; margin: 10px 30%; padding: 10px; border-radius:999px"
       @click="addMore"
     >
