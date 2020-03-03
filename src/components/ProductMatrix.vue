@@ -1,5 +1,8 @@
 <template>
   <div class="product-matrix">
+    <div class="header-module">
+      <h2 class="a-heading-1">Rekommendationer</h2>
+    </div>
     <div v-if="error">{{ error }}</div>
     <ProductCard
       v-for="product in productList"
