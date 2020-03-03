@@ -6,14 +6,16 @@
       :id="product.code"
       :key="product.code"
     />
-    <button
-      v-if="productList.length > 0 && productList.length <= 6"
-      style="width:100%; margin: 10px 30%; padding: 10px; border-radius:999px"
-      @click="addMore"
-    >
-      Visa mer
-    </button>
     <div v-for="n in fillersNeeded" :key="n" class="fill-last-row"></div>
+    <div class="nav-bar">
+      <button
+        v-if="productList.length > 0 && productList.length <= 6"
+        class="button"
+        @click="addMore"
+      >
+        Visa mer
+      </button>
+    </div>
   </div>
 </template>
 
@@ -114,16 +116,24 @@ export default Vue.extend({
         // `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1&fields=DEFAULT&storeId=016001&rrSessionId=s109421930639200&rcs=`
       )
       .then(response => {
-        this.productList = Vue.prototype.$receivedProducts =
-          response.data.placements[0].products;
-        return this.productList;
+        // this.productList = Vue.prototype.$receivedProducts =
+        //   response.data.placements[0].products;
+        // return this.productList;
         // Vue.prototype.$receivedProducts = response.data[0].products;
         // return (this.productList = response.data[0].products);
+        let productsInResponse = response.data.placements[0].products;
+        // this.productList.concat(productsInResponse);
+        this.productList = [...productsInResponse, ...this.productList]; // sometimes the second request is received first, so lets add it to the beginning
+        this.productList = uniqBy(this.productList, "code");
+        // this.productList = this.productList.push(...productsInResponse);
+        Vue.prototype.$receivedProducts = this.productList;
+        return this.productList;
       })
       .catch(error => (this.error = error));
   },
   methods: {
     addMore() {
+      window.console.debug("addMore()");
       axios
         .get(
           // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=generic_page.generic_recs1"
@@ -146,6 +156,7 @@ export default Vue.extend({
     },
     getWidth() {
       this.width = this.$parent.$el.clientWidth;
+      window.console.debug("width:", this.width);
 
       if (this.width > 3 * 152) {
         this.columns = 3;
@@ -200,15 +211,35 @@ export default Vue.extend({
   // align-items: stretch;
 }
 
+.nav-bar {
+  width: 100%;
+  text-align: center;
+}
+
+.button {
+  width: 190px;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 999px;
+  color: white;
+  cursor: pointer;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #00aa46;
+  font-size: 16px;
+  border: 0;
+}
+
 .fill-last-row {
   // box-sizing: border-box;
-  min-width: 115px;
+  min-width: 120px;
   max-width: 200px;
-  flex-basis: 115px;
+  flex-basis: 120px;
   flex-grow: 1;
   margin: 1px;
   padding: 0 15px;
 }
+
 // .product-matrix::after {
 //   content: "";
 //   flex: auto;
