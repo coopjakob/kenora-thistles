@@ -180,6 +180,10 @@ export default Vue.extend({
     // TODO: need to reorder the flow, including test data
     qty: {
       get: function() {
+        // return COOP.minicart.cartData.entries.find(
+        // (entry: any) => entry?.product?.code === this.id
+        // )?.quantity;
+
         let index = COOP.minicart.cartData.entries.findIndex(
           (entry: any) => entry.product.code === this.id
         );
