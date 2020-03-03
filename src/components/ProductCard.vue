@@ -17,8 +17,13 @@
     <div v-if="splash" class="splash">
       <div v-if="splash.label" class="promo-text">{{ splash.label }}</div>
       <div class="price">
-        {{ splash.price }}<span class="unit">{{ splash.unit }}</span>
-        <span v-if="splash.decimal" class="decimal">{{ splash.decimal }}</span>
+        <div class="price-start">{{ splash.price }}</div>
+        <div class="price-end">
+          <span class="unit">{{ splash.unit }}</span>
+          <span v-if="splash.decimal" class="decimal">{{
+            splash.decimal
+          }}</span>
+        </div>
       </div>
     </div>
 
@@ -44,11 +49,7 @@
       >
     </div>
 
-    <div
-      v-for="theInfo in consumerInfo"
-      :key="theInfo"
-      class="consumer-info"
-    >
+    <div v-for="theInfo in consumerInfo" :key="theInfo" class="consumer-info">
       {{ theInfo }}
     </div>
 
@@ -280,7 +281,9 @@ export default Vue.extend({
       }
 
       let parts: any;
-      const regex = /(?<label>\d+ för )*(?<price>\d+):(?<decimal>[-\d]+) *\/*(?<unit>.*)/g;
+      // const regex = /(?<label>\d+ för )*(?<price>\d+):(?<decimal>[-\d]+) *\/*(?<unit>.*)/g; // problem with 10:- /kg
+      const regex = /(?<label>\d+ för )*(?<price>\d+):-?(?<decimal>[\d]+)? *\/*(?<unit>.*)/g; // will return empty decimal if :-
+
       // https://regex101.com/
 
       parts = regex.exec(
@@ -293,23 +296,25 @@ export default Vue.extend({
         return false;
       }
 
-      let label = parts[1];
-      let price = parts[2];
-      let decimal = parts[3];
-      let unit = parts[4];
+      let label = parts.groups.label;
+      let price = parts.groups.price;
+      let decimal = parts.groups.decimal;
+      let unit = parts.groups.unit;
 
-      if (unit == "st" && decimal == "-") {
-        price = price + ":-";
-        decimal = "";
-        unit = "";
+      if (unit == "st" && !decimal) {
+        unit = null;
       }
 
-      if (unit == "" && decimal == "-") {
-        price = price + ":-";
-        decimal = "";
+      if (unit == "kg" && !decimal) {
+        label = "1 " + unit;
+        unit = null;
       }
 
-      if (unit != "") {
+      if (!unit && !decimal) {
+        price = price + ":-";
+      }
+
+      if (unit) {
         unit = "/" + unit;
       }
 
@@ -642,6 +647,7 @@ export default Vue.extend({
     display: flex
     flex-direction: column
     justify-content: center
+    align-items: center
     width: 64px
     height: 47px
     position: absolute
@@ -665,14 +671,24 @@ export default Vue.extend({
       position: relative
       margin: 0 auto
 
+    .price-start
+      display: inline-block
+
+    .price-end
+      display: inline-block
+      position: relative
+      font-size: 22px
+      text-align: left
+
     .decimal
       position: absolute
-      top: 2px
-      right: 3px
+      top: 3px
+      left: 0
       font-size: 10px
 
     .unit
-      font-size: 10px
+      font-size: 9px
+
 
   .product-name
     font-size: 16px
