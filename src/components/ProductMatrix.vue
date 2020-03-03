@@ -226,6 +226,10 @@ export default Vue.extend({
   // align-items: stretch;
 }
 
+.header-module {
+  margin: 35px 0;
+}
+
 .nav-bar {
   width: 100%;
   text-align: center;
