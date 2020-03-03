@@ -663,7 +663,7 @@ export default Vue.extend({
     .promo-text
       font-size: 10px
       text-align: center
-      margin-bottom: -7px
+      margin-bottom: -5px
 
     .price
       display: inline-block
