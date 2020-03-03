@@ -656,15 +656,16 @@ export default Vue.extend({
     font-family: 'Coop New', 'CoopNew-Black', sans-serif
     text-align: center
     font-size: 22px
-    line-height: 1
+    line-height: normal
     color: rgb(255, 51, 0)
     background-image: url('https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg')
     background-size: contain
 
     .promo-text
       font-size: 10px
+      line-height: 1em;
       text-align: center
-      margin-bottom: -5px
+      margin-bottom: -4px
 
     .price
       display: inline-block
