@@ -92,7 +92,8 @@
           data-category-lvl-3="0"
         >
           <button
-            class="add js-qty-selector-minus"
+            class="remove js-qty-selector-minus"
+            :class="{ 'is-disabled': qty === 0 }"
             aria-label="Minska antalet"
             @click="updateCart(qty - 1)"
           >
@@ -111,7 +112,7 @@
             @keydown.enter="updateCartInput"
           />
           <button
-            class="remove js-qty-selector-plus"
+            class="add js-qty-selector-plus"
             aria-label="Öka antalet"
             @click="updateCart(qty + 1)"
           >
@@ -611,9 +612,9 @@ export default Vue.extend({
   flex-direction: column
   position: relative
   // box-sizing: border-box;
-  min-width: 150px
-  // max-width: 200px
-  flex-basis: 115px
+  min-width: 120px
+  max-width: 200px
+  flex-basis: 120px
   flex-grow: 1
   margin: 1px
   background-color: white
@@ -786,6 +787,7 @@ export default Vue.extend({
       display: flex
       width: 34px
       height: 34px
+      background-color: #005537
       justify-content: center
       align-items: center
       border: 0
@@ -796,11 +798,8 @@ export default Vue.extend({
     .add:focus, .remove:focus
       border: 1px solid white
 
-    .add
+    .is-disabled
       background-color: rgba(0,85,55,.3)
-
-    .remove
-      background-color: #005537
 
     input
       width: 34px
