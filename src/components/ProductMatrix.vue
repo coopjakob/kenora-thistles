@@ -147,34 +147,34 @@ export default Vue.extend({
     getWidth() {
       this.width = this.$parent.$el.clientWidth;
 
-      if (this.width > 3 * 147) {
+      if (this.width > 3 * 152) {
         this.columns = 3;
         this.rows = 2;
       }
 
-      if (this.width >= 4 * 147) {
+      if (this.width >= 4 * 152) {
         this.columns = 4;
         this.rows = 2;
         // this.placement = "home_page.2020_start_full"; //"home_page.horizontal_recs1"'
         this.addMore();
       }
 
-      if (this.width > 5 * 147) {
+      if (this.width > 5 * 152) {
         this.columns = 5;
         this.rows = 2;
       }
 
-      if (this.width > 6 * 147) {
+      if (this.width > 6 * 152) {
         this.columns = 6;
         this.rows = 2;
       }
 
-      if (this.width > 7 * 147) {
+      if (this.width > 7 * 152) {
         this.columns = 7;
         this.rows = 2;
       }
 
-      if (this.width > 8 * 147) {
+      if (this.width > 8 * 152) {
         this.columns = 8;
         this.rows = 2;
       }

@@ -611,8 +611,8 @@ export default Vue.extend({
   flex-direction: column
   position: relative
   // box-sizing: border-box;
-  min-width: 115px
-  max-width: 200px
+  min-width: 150px
+  // max-width: 200px
   flex-basis: 115px
   flex-grow: 1
   margin: 1px
