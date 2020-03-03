@@ -34,9 +34,15 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
 //dev
-let COOP: any;
-COOP = [];
-COOP.config = [];
+// let COOP: any;
+// COOP = [];
+// declare global {
+//     interface Window {
+//       ACC: {
+//         config: any,
+//       }; }
+// }
+
 // let COOP = this.$store.state;
 
 export default Vue.extend({
@@ -49,7 +55,7 @@ export default Vue.extend({
       productList: [] as any[],
       error: "",
       placement: "", // "home_page.mobile_horizontal_recs1",
-      // test: COOP.config
+      // test: window.ACC.config
       columns: 2,
       rows: 2,
       width: 0
@@ -84,20 +90,24 @@ export default Vue.extend({
       return sessionStorage.getItem("rcs"); //this.getCookieValue("rr_rcs");
     },
     rrSessionId(): String {
-      // COOP.config.rrSessionId = "s109421930639200";
-      return COOP.config.rrSessionId;
+      // window.ACC.config.rrSessionId = "s109421930639200";
+      return window.ACC.config.rrSessionId;
     },
     user(): String {
-      // COOP.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
-      return COOP.config.user;
+      // window.ACC.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
+      if (window.ACC.config.user) {
+        return window.ACC.config.user;
+      } else {
+        return "a148649e-235a-4157-8df8-5b2aa424ea7d";
+      }
     },
     storeId(): String {
-      // COOP.config.coopStore = "016001";
-      return COOP.config.coopStore;
+      // window.ACC.config.coopStore = "016001";
+      return window.ACC.config.coopStore;
     },
     cartguid(): String {
-      // COOP.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
-      return COOP.config.cartguid;
+      // window.ACC.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
+      return window.ACC.config.cartguid;
     }
   },
   mounted() {
@@ -112,7 +122,7 @@ export default Vue.extend({
         // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=home_page.horizontal_recs1"
         // https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1%257Chome_page.horizontal_recs2%257Chome_page.horizontal_recs1%257Chome_page.horizontal_recs1&fields=DEFAULT
         // &currentPage=0&pageSize=6&storeId=016001&rrSessionId=s91829745064064&rcs=eF5jYSlN9kg2SU6xtLBM0k00SzPRNTFOTdM1Sks21zUyME1KMzdNNDAzTOXKLSvJTBEwNDe21DXUNQQArgQO0g
-        `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.2020_start_few&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`
+        `https://www.coop.se/ws/v2/coop/users/${this.user}/products/recommend-segmented?placements=home_page.2020_start_few&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`
         // `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1&fields=DEFAULT&storeId=016001&rrSessionId=s109421930639200&rcs=`
       )
       .then(response => {
