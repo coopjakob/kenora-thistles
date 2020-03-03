@@ -36,12 +36,13 @@ Vue.use(VueAxios, axios);
 //dev
 // let COOP: any;
 // COOP = [];
-// declare global {
-//     interface Window {
-//       ACC: {
-//         config: any,
-//       }; }
-// }
+declare global {
+  interface Window {
+    ACC: {
+      config: any;
+    };
+  }
+}
 
 // let COOP = this.$store.state;
 
