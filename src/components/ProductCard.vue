@@ -608,13 +608,14 @@ export default Vue.extend({
 
 <style lang="sass" scoped>
 .card
+  box-sizing: border-box;
   display: flex
   flex-direction: column
   position: relative
   // box-sizing: border-box;
-  min-width: 120px
-  max-width: 200px
-  flex-basis: 120px
+  min-width: 150px
+  max-width: 230px
+  flex-basis: 150px
   flex-grow: 1
   margin: 1px
   background-color: white

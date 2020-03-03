@@ -18,6 +18,11 @@ export default {
 </script>
 
 <style lang="less">
+*,
+div {
+  //like on coop.se
+  box-sizing: border-box;
+}
 body {
   background-color: #f5f5f5;
 }

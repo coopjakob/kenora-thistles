@@ -231,10 +231,10 @@ export default Vue.extend({
 }
 
 .fill-last-row {
-  // box-sizing: border-box;
-  min-width: 120px;
-  max-width: 200px;
-  flex-basis: 120px;
+  box-sizing: border-box;
+  min-width: 150px;
+  max-width: 230px;
+  flex-basis: 150px;
   flex-grow: 1;
   margin: 1px;
   padding: 0 15px;
