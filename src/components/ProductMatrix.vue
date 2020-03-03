@@ -18,6 +18,8 @@
 </template>
 
 <script lang="ts">
+var uniqBy = require("lodash.uniqby");
+
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
@@ -26,6 +28,7 @@ import ProductCard from "@/components/ProductCard.vue";
 
 import axios from "axios";
 import VueAxios from "vue-axios";
+
 Vue.use(VueAxios, axios);
 
 //dev
@@ -134,7 +137,7 @@ export default Vue.extend({
           let productsInResponse = response.data.placements[0].products;
           // this.productList.concat(productsInResponse);
           this.productList = [...this.productList, ...productsInResponse];
-          // this.productList = _.uniqBy(this.productList, 'code');
+          this.productList = uniqBy(this.productList, "code");
           // this.productList = this.productList.push(...productsInResponse);
           Vue.prototype.$receivedProducts = this.productList;
           return this.productList;
