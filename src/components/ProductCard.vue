@@ -109,7 +109,6 @@
             max="999"
             data-max="999"
             :placeholder="qty"
-            @keydown.enter="updateCartInput"
           />
           <button
             class="add js-qty-selector-plus"
