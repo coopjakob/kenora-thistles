@@ -521,7 +521,7 @@ export default Vue.extend({
       &::-ms-input-placeholder /* Microsoft Edge */
         color: white
 
-  .is-delayed button
+  .is-delayed .remove
     cursor: wait!important
 
   .qty-selector.has-value, .qty-selector.vue-has-value
