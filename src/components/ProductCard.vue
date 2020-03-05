@@ -93,7 +93,6 @@
         >
           <button
             class="remove js-qty-selector-minus"
-            :class="{ 'is-disabled': qty == 0 }"
             aria-label="Minska antalet"
           >
             <img
@@ -784,6 +783,9 @@ export default Vue.extend({
     flex-grow: 1
     padding: 3px
 
+    button:disabled
+      background-color: rgba(0,85,55,.3)
+
     .add, .remove
       display: flex
       width: 34px
@@ -798,9 +800,6 @@ export default Vue.extend({
 
     .add:focus, .remove:focus
       border: 1px solid white
-
-    .is-disabled
-      background-color: rgba(0,85,55,.3)
 
     input
       width: 34px
