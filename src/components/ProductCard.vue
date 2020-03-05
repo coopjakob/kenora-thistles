@@ -86,7 +86,7 @@
           <span>Lägg till</span>
         </div>
         <div
-          class="add-to-cart qty-selector js-qty-selector"
+          class="add-to-cart m-cart-addition qty-selector js-qty-selector"
           :class="{ 'vue-has-value': qty > 0 }"
           :data-product="id"
           data-category-lvl-1="0"
