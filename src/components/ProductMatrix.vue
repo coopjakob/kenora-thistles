@@ -157,8 +157,8 @@ export default Vue.extend({
 
     var elements = document.querySelectorAll(".js-qty-selector-input");
     Array.prototype.forEach.call(elements, function(el, i) {
+      window.console.debug("has-value:", el.value);
       if (el.value > 0) {
-        window.console.debug("has-value:", el.value);
         el.closest(".m-cart-addition").classList.add("has-value");
       }
     });
