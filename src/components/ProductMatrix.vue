@@ -154,6 +154,14 @@ export default Vue.extend({
         return this.productList;
       })
       .catch(error => (this.error = error));
+
+    var elements = document.querySelectorAll(".js-qty-selector-input");
+    Array.prototype.forEach.call(elements, function(el, i) {
+      if (el.value > 0) {
+        window.console.debug("has-value:", el.value);
+        el.closest(".m-cart-addition").classList.add("has-value");
+      }
+    });
   },
   methods: {
     addMore() {
