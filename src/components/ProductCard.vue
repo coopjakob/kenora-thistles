@@ -348,7 +348,7 @@ export default Vue.extend({
     position: absolute
     top: 10px
     right: 10px
-    font-family: 'Coop New', CoopNew, 'CoopNew-Black', sans-serif
+    font-family: CoopNew, "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center
     font-size: 22px
     line-height: normal
@@ -360,7 +360,7 @@ export default Vue.extend({
       font-size: 10px
       line-height: 1em
       text-align: center
-      margin-bottom: -4px
+      margin-bottom: -2px
 
     .price
       display: inline-block
