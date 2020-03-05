@@ -87,6 +87,7 @@
         </div>
         <div
           class="add-to-cart qty-selector js-qty-selector"
+          :class="{ 'has-value': qty > 0 }"
           :data-product="id"
           data-category-lvl-1="0"
           data-category-lvl-3="0"
