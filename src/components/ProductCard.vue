@@ -380,16 +380,15 @@ export default Vue.extend({
       display: inline-block
       position: relative
       font-size: 22px
-      text-align: left
 
     .decimal
       position: absolute
-      top: 3px
+      top: 1px
       left: 0
-      font-size: 10px
+      font-size: 12px
 
     .unit
-      font-size: 9px
+      font-size: 12px
 
   .product-name
     font-size: 16px
