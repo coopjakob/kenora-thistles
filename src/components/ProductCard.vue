@@ -105,6 +105,7 @@
             max="999"
             data-max="999"
             :placeholder="qty"
+            @change="qty = event.target.value"
           />
           <button
             class="add js-qty-selector-plus"
