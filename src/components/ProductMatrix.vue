@@ -161,14 +161,19 @@ export default Vue.extend({
     setClassHasValue(runs: number) {
       window.console.debug("setClassHasValue runs", runs);
       let findings = 0;
-      let elements = document.querySelectorAll(".js-qty-selector-input");
-      Array.prototype.forEach.call(elements, function(el, i) {
-        window.console.debug("has-value:", el.value);
-        if (el.value > 0) {
-          findings += 1;
-          el.closest(".m-cart-addition").classList.add("has-value");
-        }
-      });
+      let container = document.querySelector(".product-matrix");
+
+      if (container) {
+        let elements = container.querySelectorAll(".js-qty-selector-input");
+        Array.prototype.forEach.call(elements, function(el, i) {
+          window.console.debug("has-value:", el.value);
+          if (el.value > 0) {
+            findings += 1;
+            el.closest(".m-cart-addition").classList.add("has-value");
+          }
+        });
+      }
+
       if (findings === 0 && runs < 20) {
         window.console.debug("none in cart found");
         setTimeout(this.setClassHasValue.bind(null, runs + 1), 500);
