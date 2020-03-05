@@ -171,7 +171,7 @@ export default Vue.extend({
       });
       if (findings === 0 && runs < 20) {
         window.console.debug("none in cart found");
-        setTimeout(this.setClassHasValue.bind(runs + 1), 500);
+        setTimeout(this.setClassHasValue.bind(null, runs + 1), 500);
       }
     },
     addMore() {
