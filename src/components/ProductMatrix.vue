@@ -155,12 +155,16 @@ export default Vue.extend({
       })
       .catch(error => (this.error = error));
 
-    var elements = document.querySelectorAll(".js-qty-selector-input");
-    Array.prototype.forEach.call(elements, function(el, i) {
-      window.console.debug("has-value:", el.value);
-      if (el.value > 0) {
-        el.closest(".m-cart-addition").classList.add("has-value");
-      }
+    window.addEventListener("DOMContentLoaded", event => {
+      window.console.debug("DOM fully loaded and parsed");
+
+      var elements = document.querySelectorAll(".js-qty-selector-input");
+      Array.prototype.forEach.call(elements, function(el, i) {
+        window.console.debug("has-value:", el.value);
+        if (el.value > 0) {
+          el.closest(".m-cart-addition").classList.add("has-value");
+        }
+      });
     });
   },
   methods: {
