@@ -87,10 +87,11 @@
         </div>
         <div
           class="add-to-cart qty-selector js-qty-selector"
-          :class="{ 'has-value': qty > 0 }"
+          :class="{ 'vue-has-value': qty > 0 }"
           :data-product="id"
           data-category-lvl-1="0"
           data-category-lvl-3="0"
+          :data-vue-value="qty"
         >
           <button
             class="remove js-qty-selector-minus"
@@ -824,7 +825,7 @@ export default Vue.extend({
       &::-ms-input-placeholder /* Microsoft Edge */
         color: white
 
-  .qty-selector.has-value
+  .qty-selector.has-value, .qty-selector.vue-has-value
     background-color: #f5f5f5
     color: #00aa46
 
