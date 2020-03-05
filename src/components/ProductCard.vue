@@ -306,9 +306,9 @@ export default Vue.extend({
   display: flex
   flex-direction: column
   position: relative
-  min-width: 150px
+  min-width: 142px
   max-width: 230px
-  flex-basis: 150px
+  flex-basis: 142px
   flex-grow: 1
   margin: 1px
   background-color: white
