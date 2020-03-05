@@ -174,7 +174,7 @@ export default Vue.extend({
         });
       }
 
-      if (findings === 0 && runs < 20) {
+      if (findings === 0 && runs < 10) {
         window.console.debug("none in cart found");
         setTimeout(this.setClassHasValue.bind(null, runs + 1), 500);
       }
@@ -207,6 +207,7 @@ export default Vue.extend({
           this.productList = uniqBy(this.productList, "code");
           // this.productList = this.productList.push(...productsInResponse);
           Vue.prototype.$receivedProducts = this.productList;
+          this.setClassHasValue(0);
           return this.productList;
         })
         .catch(error => (this.error = error));
