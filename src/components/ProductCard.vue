@@ -76,22 +76,19 @@
 
       <div class="action">
         <div
-          v-if="qty === 999"
+          v-if="qty === 0"
           class="add-to-cart js-qty-selector-plus"
           tabindex="0"
           role="button"
           aria-pressed="false"
-          @click="updateCart(1)"
         >
           <span>Lägg till</span>
         </div>
         <div
           class="add-to-cart m-cart-addition qty-selector js-qty-selector"
-          :class="{ 'vue-has-value': qty > 0 }"
           :data-product="id"
           data-category-lvl-1="0"
           data-category-lvl-3="0"
-          :data-vue-value="qty"
         >
           <button
             class="remove js-qty-selector-minus"
@@ -100,12 +97,9 @@
           <input
             class="js-qty-selector-input"
             type="number"
-            :value="qty"
             min="0"
             max="999"
             data-max="999"
-            :placeholder="qty"
-            @change="inputHasChanged"
           />
           <button
             class="add js-qty-selector-plus"
@@ -124,32 +118,8 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
-//dev
-let COOP = {
-  config: {
-    user: "",
-    rrSessionId: "",
-    coopStore: "",
-    cartguid: "",
-    qty: ""
-  },
-  minicart: {
-    cartData: {
-      entries: [
-        {
-          quantity: 0,
-          product: {
-            code: 0
-          }
-        }
-      ]
-    }
-  }
-};
-
 export default Vue.extend({
   props: {
-    // price: String,
     id: {
       type: String,
       // default: "0",
@@ -162,76 +132,10 @@ export default Vue.extend({
       added: false,
       isAdding: false,
       receivedProducts: Vue.prototype.$receivedProducts,
-      // qty: 0 as number,
-      // quantity: 0 as number,
       savedQuantity: 0 as number
     };
   },
   computed: {
-    // TODO: need to reorder the flow, including test data
-    qty: {
-      get: function() {
-        // return COOP.minicart.cartData.entries.find(
-        // (entry: any) => entry?.product?.code === this.id
-        // )?.quantity;
-
-        let index = COOP.minicart.cartData.entries.findIndex(
-          (entry: any) => entry.product.code === this.id
-        );
-
-        window.console.debug("index:", index);
-
-        if (index > -1) {
-          window.console.debug("quantity exist in cart product, get old");
-          return COOP.minicart.cartData.entries[index].quantity;
-        } else {
-          return 0;
-        }
-
-        // let returnValue = this.savedQuantity as number;
-        // // return 0;
-        // // Dev, if not in cart
-        // return returnValue;
-      },
-      set: function(value: number) {
-        this.savedQuantity = value;
-
-        let quantityFromCartIndex = COOP.minicart.cartData.entries.findIndex(
-          (entry: any) => entry.product.code === this.id
-        );
-
-        window.console.debug("quantityFromCartIndex:", quantityFromCartIndex);
-
-        // DEV
-        // you need to set via API and then get the new file, then update,
-        if (quantityFromCartIndex > 0) {
-          window.console.debug(
-            "quantity exist in cart product, set new value",
-            value
-          );
-          // COOP.minicart.cartData.entries[quantityFromCartIndex].quantity = value;
-          // latest from server
-          // update here or update on this.savedQuantity?
-        }
-      }
-    },
-    updateCartModel: {
-      get: function() {
-        let qty: number = this.qty;
-        if (qty > 0) {
-          return qty;
-        } else {
-          return "";
-        }
-      },
-      set: function(value: number) {
-        if (value > 0) {
-          this.updateCart(value);
-        } else {
-          this.updateCart(0);
-        }
-      }
-    },
     productIndex(): string {
       return this.receivedProducts.findIndex(
         (product: any) => product.code === this.id
@@ -316,79 +220,6 @@ export default Vue.extend({
 
       return { label, price, decimal, unit };
     },
-    splashText(): any {
-      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
-        let promoText: any;
-        const regex = /(\d{1,} för) \d{1,}/g;
-
-        promoText = regex.exec(
-          this.receivedProducts[this.productIndex].potentialPromotions[0]
-            .description
-        );
-        if (promoText) {
-          return promoText[1];
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    },
-    splashTextPrice(): any {
-      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
-        let promoText: any;
-        const regex = /\d{1,} för (\d{1,}.+)/g;
-
-        promoText = regex.exec(
-          this.receivedProducts[this.productIndex].potentialPromotions[0]
-            .description
-        );
-        if (promoText) {
-          return promoText[1];
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    },
-    splashPrice(): any {
-      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
-        let promoText: any;
-        const regex = /(\d+)(.+) \/(.+)/g;
-
-        promoText = regex.exec(
-          this.receivedProducts[this.productIndex].potentialPromotions[0]
-            .description
-        );
-
-        if (promoText) {
-          if (promoText[3] === "st") {
-            return promoText[1] + promoText[2];
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    },
-    splashDecimal(): any {
-      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
-        let promoText: any;
-        const regex = /\d+ för \d+(.+)/g;
-
-        promoText = regex.exec(
-          this.receivedProducts[this.productIndex].potentialPromotions[0]
-            .description
-        );
-        return promoText[1];
-      } else {
-        return false;
-      }
-    },
     promoDescription(): any {
       if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
         return this.receivedProducts[this.productIndex].potentialPromotions[0]
@@ -432,99 +263,10 @@ export default Vue.extend({
     },
     imgAlt(): string {
       return this.name + " " + this.price + "kr/st";
-    },
-    rcs(): any {
-      sessionStorage.setItem(
-        "rcs",
-        "eF5j4cotK8lMETA0N7bUNdQ1ZClN9jAxNDFLS05O1k0xMzTRNTFNSdFNTTFMBXJNk5Is0xKNEg0tAZ_oDyg"
-      ); // local env
-      return sessionStorage.getItem("rcs"); //this.getCookieValue("rr_rcs");
-    },
-    rrSessionId(): String {
-      // COOP.config.rrSessionId = "s109421930639200";
-      return COOP.config.rrSessionId;
-    },
-    user(): String {
-      // COOP.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
-      return COOP.config.user;
-    },
-    storeId(): String {
-      // COOP.config.coopStore = "016001";
-      return COOP.config.coopStore;
-    },
-    cartguid(): String {
-      // COOP.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
-      return COOP.config.cartguid;
     }
   },
-  mounted: function() {
-    const element = document.getElementsByClassName("example");
-    // this.receivedProducts[this.productIndex].productLabels.forEach(element => {
-    //   switch(element.code) {
-    //     case "KRAV0U0MARK": {
-    //       this.isKrav = true;
-    //       break;
-    //     }
-    //     case "EKO_SV": {
-    //       this.isEko = true;
-    //       break;
-    //     }
-    //     case "NY": {
-    //       this.isNew = true;
-    //       break;
-    //     }
-    //     case "SVANEN": {
-    //       this.isSvanen = true;
-    //       break;
-    //     }
-    //     case "NYCKELHALET": {
-    //       this.isN
-    //       break;
-    //     }
-
-    //   }
-    // });
-  },
+  mounted: function() {},
   methods: {
-    // object.addEventListener("touchstart", myScript);
-    eventListener(e: any) {
-      window.console.log(e);
-    },
-    inputHasChanged(event: any) {
-      window.console.debug("event:", event);
-      this.qty = event.target.value;
-    },
-    reach() {
-      window.console.debug("reach");
-      if (!this.added) {
-        this.isAdding = true;
-        window.console.debug("adding...");
-      } else {
-        this.added = false;
-        this.updateCart(0);
-        window.console.debug("removed");
-        window.console.info(
-          "%c<Rick> I see you thow the item back in the shelf. Guess you don't want it.",
-          "background: #000; color: #fff; padding: 5px"
-        );
-      }
-    },
-    withdraw() {
-      window.console.debug("withdraw");
-      if (this.isAdding) {
-        this.added = true;
-        this.updateCart(1);
-        window.console.debug("added");
-        window.console.info(
-          "%c<Adam> I can see that you are interested in a product.",
-          "background: #000; color: #fff; padding: 5px"
-        );
-        this.isAdding = false;
-      }
-    },
-    info(target: string) {
-      return this.receivedProducts[this.productIndex][target];
-    },
     isPromo() {
       let index = this.productIndex;
       if (this.receivedProducts[index].promotionPrice) {
@@ -535,11 +277,6 @@ export default Vue.extend({
       } else {
         return false;
       }
-    },
-    formattedPrice(str: string) {
-      str = str + ' <span class="unit">kr/st</span>';
-      str = str.replace(".", ":");
-      return str;
     },
     // https://res.cloudinary.com/coopsverige/image/upload/387245.tiff
     //         res.cloudinary.com/coopsverige/image/upload/fl_progressive,q_90,c_lpad,g_center,h_222,w_222/352288.jpg
@@ -558,48 +295,6 @@ export default Vue.extend({
         "/q_auto,f_auto/" +
         imgId
       );
-    },
-    updateCartInput(e: any) {
-      let input = +e.target.value;
-      window.console.debug(input);
-
-      if (input > 0) {
-        this.updateCart(input);
-      } else {
-        this.updateCart(0);
-      }
-      e.target.value = null;
-    },
-    updateCart(newQuantity: number) {
-      if (newQuantity < 0) {
-        newQuantity = 0;
-      }
-
-      window.console.debug("updateCart(", newQuantity, ")");
-      window.console.debug("old qty:", this.qty);
-
-      this.qty = newQuantity;
-      window.console.debug("new qty:", this.qty);
-
-      // const params = new URLSearchParams();
-      // params.append('code', '7300156585899');
-      // params.append('qty', qty);
-
-      // axios
-      //   .post(
-      //     `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}/products`,
-      //     `code=${this.id}&qty=${this.qty}`
-      //   )
-      //   .then(function(response) {
-      //     window.console.debug(response);
-      //   })
-      //   .catch(function(error) {
-      //     window.console.debug(error);
-      //   });
-
-      // axios.post(
-      // 'https://www.coop.se/api/hybris/carts/current/items',
-      // {"quantity":999,"id":"57","productId":"7300156507235","variantId":null,"total":0,"isGroceryBag":false,"row":0,"name":null,"itemReplaceable":false,"notBuyable":false,"variants":[],"packageSize":null,"packageSizeUnit":null,"packageSizeInformation":null,"image":null,"manufacturer":null,"recycleFee":null})
     }
   }
 });
@@ -607,11 +302,10 @@ export default Vue.extend({
 
 <style lang="sass" scoped>
 .card
-  box-sizing: border-box;
+  box-sizing: border-box
   display: flex
   flex-direction: column
   position: relative
-  // box-sizing: border-box;
   min-width: 150px
   max-width: 230px
   flex-basis: 150px
@@ -664,7 +358,7 @@ export default Vue.extend({
 
     .promo-text
       font-size: 10px
-      line-height: 1em;
+      line-height: 1em
       text-align: center
       margin-bottom: -4px
 
@@ -692,7 +386,6 @@ export default Vue.extend({
     .unit
       font-size: 9px
 
-
   .product-name
     font-size: 16px
     margin-bottom: 7px
@@ -703,13 +396,13 @@ export default Vue.extend({
 
   .flag
     margin-right: 0.25em
+
   .brand
     font-weight: bold
 
   .members-only
     margin-bottom: 10px
     align-self: flex-start
-
     font-size: 12px
     font-weight: bold
     display: inline-block
@@ -739,7 +432,7 @@ export default Vue.extend({
 
   .promo-price
     display: inline-block
-    margin-right: 0.25em;
+    margin-right: 0.25em
     color: rgb(255, 51, 0)
 
   .pick-price
