@@ -98,7 +98,7 @@
           <input
             class="js-qty-selector-input"
             type="number"
-            value="0"
+            :value="qty"
             min="0"
             max="999"
             data-max="999"
