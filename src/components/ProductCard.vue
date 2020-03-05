@@ -766,8 +766,6 @@ export default Vue.extend({
 
     width: 100%
     height: 40px
-    border-radius: 20px
-    background-color: #00aa46
 
   .add-to-cart
     display: flex
@@ -782,6 +780,9 @@ export default Vue.extend({
     justify-content: space-between
     flex-grow: 1
     padding: 3px
+    border-radius: 20px
+    background-color: #00aa46
+    color: white
 
     button:disabled
       background-color: rgba(0,85,55,.3)
@@ -791,6 +792,10 @@ export default Vue.extend({
       width: 34px
       height: 34px
       background-color: #005537
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+PHBhdGggZD0iTTE5IDkuNUgxIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiLz48L3N2Zz4=')
+      background-repeat: no-repeat
+      background-position: center
+      background-size: 10px 10px
       justify-content: center
       align-items: center
       border: 0
@@ -805,7 +810,6 @@ export default Vue.extend({
       width: 34px
       height: 32px
       flex-grow: 1
-      color: white
       text-align: center
       font-size: 16px
       background: transparent
@@ -821,6 +825,14 @@ export default Vue.extend({
 
       &::-ms-input-placeholder /* Microsoft Edge */
         color: white
+
+  .qty-selector.has-value
+    background-color: #f5f5f5
+    color: #00aa46
+
+    .add, .remove
+      background-color: white
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zd…BhdGggZD0iTTE5IDkuNUgxIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMGFhNDYiLz48L3N2Zz4='
 
   input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button
     -webkit-appearance: none
