@@ -105,7 +105,7 @@
             max="999"
             data-max="999"
             :placeholder="qty"
-            @change="qty = $event.target.value"
+            @change="inputHasChanged"
           />
           <button
             class="add js-qty-selector-plus"
@@ -489,6 +489,10 @@ export default Vue.extend({
     // object.addEventListener("touchstart", myScript);
     eventListener(e: any) {
       window.console.log(e);
+    },
+    inputHasChanged(event: any) {
+      window.console.debug("event:", event);
+      this.qty = event.target.value;
     },
     reach() {
       window.console.debug("reach");
