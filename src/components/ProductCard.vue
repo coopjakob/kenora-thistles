@@ -312,8 +312,13 @@ export default Vue.extend({
   flex-grow: 1
   margin: 1px
   background-color: white
-  padding: 15px
+  padding: 10px
   color: #333
+
+  @media (min-width: 425px)
+    min-width: 150px
+    flex-basis: 150px
+    padding: 15px
 
   .pricing
     flex-grow: 1
