@@ -522,7 +522,7 @@ export default Vue.extend({
         color: white
 
   .is-delayed button
-    cursor: wait
+    cursor: wait!important
 
   .qty-selector.has-value, .qty-selector.vue-has-value
     background-color: #f5f5f5
