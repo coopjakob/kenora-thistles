@@ -120,10 +120,7 @@ export default Vue.extend({
   data() {
     // COOP = this.$store.state;
     return {
-      added: false,
-      isAdding: false,
-      receivedProducts: Vue.prototype.$receivedProducts,
-      savedQuantity: 0 as number
+      receivedProducts: Vue.prototype.$receivedProducts
     };
   },
   computed: {
