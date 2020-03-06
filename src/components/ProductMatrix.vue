@@ -124,8 +124,8 @@ export default Vue.extend({
   mounted() {
     window.console.debug("config:", window.ACC.config);
 
-    this.getWidth();
-    // window.addEventListener("resize", this.getWidth);
+    // this.getWidth();
+    window.addEventListener("resize", this.getWidth);
 
     window.console.debug(this.columns + "x" + this.rows);
 
