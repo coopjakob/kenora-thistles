@@ -267,7 +267,7 @@ export default Vue.extend({
 
 .header-module {
   width: 100%;
-  margin: 35px 0 24px 0;
+  margin-bottom: 24px;
 }
 
 .nav-bar {
