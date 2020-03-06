@@ -57,7 +57,8 @@ export default Vue.extend({
       // test: window.ACC.config
       columns: 2,
       rows: 999,
-      width: 0
+      width: 0,
+      moreAdded: false
     };
   },
   computed: {
@@ -221,7 +222,11 @@ export default Vue.extend({
         this.columns = 4;
         this.rows = 3;
         // this.placement = "home_page.2020_start_full"; //"home_page.horizontal_recs1"'
-        this.addMore();
+
+        if (!this.moreAdded) {
+          this.addMore();
+          this.moreAdded = true;
+        }
       }
 
       if (this.width > 5 * 152) {
