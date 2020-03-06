@@ -2,15 +2,15 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 export default new Vuex.Store({
-  //
-  // const store = new Vuex.Store({
   state: {
     config: {
       // Dev
       rrSessionId: "s109421930639200",
       user: "a148649e-235a-4157-8df8-5b2aa424ea7d",
       coopStore: "016001",
-      cartguid: "8050f27b-ce0b-49f8-b535-daa7f6faca1d"
+      cartguid: "8050f27b-ce0b-49f8-b535-daa7f6faca1d",
+      authToken:
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk3OEIzMjQwOTExQkE4QkYxRUZDNzI2NDI3MTFGQ0U3RkM0RUNEMkMiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJsNHN5UUpFYnFMOGVfSEprSnhIODVfeE96U3cifQ.eyJuYmYiOjE1ODM0ODI4MjMsImV4cCI6MTU4MzQ4NjQyMywiaXNzIjoiaHR0cHM6Ly9sb2dpbi5jb29wLnNlIiwiYXVkIjpbImh0dHBzOi8vbG9naW4uY29vcC5zZS9yZXNvdXJjZXMiLCJoeWJyaXNfYXBpIl0sImNsaWVudF9pZCI6Imh5YnJpc19jbXNfcHJvZCIsInN1YiI6ImExNDg2NDllLTIzNWEtNDE1Ny04ZGY4LTViMmFhNDI0ZWE3ZCIsImF1dGhfdGltZSI6MTU4MzI2NjExNywiaWRwIjoibG9jYWwiLCJlbm92YUlkIjoiMjA5MjMxMjI0IiwiaXNDb21wYW55IjoiRmFsc2UiLCJsYXN0TG9naW5EYXRlIjoiMjAyMC0wMy0wMyAyMTowODozNyIsImlkMzYwIjoiM2I0YmJiNTQtM2IxYS00MWExLWJmZDMtMzdiODFlZjE4ODNiIiwiZW1haWwiOiJqYWtvYi5uYW5uZXNvbkBjb29wLnNlIiwic2NvcGUiOlsiaHlicmlzLnByb2ZpbGUiLCJvcGVuaWQiLCJoeWJyaXNfYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.sQJ_ytJIwvi0TGh4GLKgVtyzvfRGGYfmRI2eqzZtaSaZj99nX0nwUYpEdvhlOmyU29q7ZB3zLxrhA_3_w_0lZ91z03Q9iNNsJRWxdLGDBj6eGsLVPEqI8au3iTiB4mnN2Tnx5FeEotOvPHmvDeia5faj8AVdAT5b3NToJqlqwCF-_Ob0LYVlXkW4JmSX9Jf75DFRiohiBNKkSRSp8tlflJ3Coaugd79T32i2ekmsZo6J0jwLUCsb4n8MyKzfvgtg1Cf5abh3fw8LCwaNxtJNaksnvxKYdjDOm7EtbjQ_-N4_Lhnk0gJQBYORVfmqbK4KPss8gjQdRe4p5MtP1tZ59A"
     },
     minicart: {
       cartData: {

@@ -353,7 +353,7 @@ export default Vue.extend({
     position: absolute
     top: 10px
     right: 10px
-    font-family: CoopNew, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: CoopNew, "Coop New", "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center
     font-size: 22px
     line-height: normal

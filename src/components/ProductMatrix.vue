@@ -37,8 +37,6 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
 //dev
-// let COOP: any;
-// COOP = [];
 declare global {
   interface Window {
     ACC: {
@@ -47,14 +45,11 @@ declare global {
   }
 }
 
-// let COOP = this.$store.state;
-
 export default Vue.extend({
   components: {
     ProductCard
   },
   data() {
-    // COOP = this.$store.state;
     return {
       productList: [] as any[],
       error: "",
@@ -115,7 +110,18 @@ export default Vue.extend({
       return window.ACC.config.cartguid;
     }
   },
+  created: function() {
+    if (!window.ACC) {
+      window.console.warn("Using fake config - data is not real");
+      window.console.debug("state:", this.$store.state);
+      window.ACC = {
+        config: this.$store.state.config
+      };
+    }
+  },
   mounted() {
+    window.console.debug("config:", window.ACC.config);
+
     this.getWidth();
     // window.addEventListener("resize", this.getWidth);
 
