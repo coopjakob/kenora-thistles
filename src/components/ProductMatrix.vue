@@ -2,10 +2,10 @@
   <div class="product-matrix">
     <div class="header-module">
       <h2 class="a-heading-1">Rekommendationer</h2>
+      <div v-if="error">{{ error }}</div>
     </div>
-    <div v-if="error">{{ error }}</div>
     <ProductCard
-      v-for="product in productList"
+      v-for="product in productList.slice(0, columns * rows)"
       :id="product.code"
       :key="product.code"
     />
@@ -214,34 +214,34 @@ export default Vue.extend({
 
       if (this.width > 3 * 152) {
         this.columns = 3;
-        this.rows = 2;
+        this.rows = 3;
       }
 
       if (this.width >= 4 * 152) {
         this.columns = 4;
-        this.rows = 2;
+        this.rows = 3;
         // this.placement = "home_page.2020_start_full"; //"home_page.horizontal_recs1"'
         this.addMore();
       }
 
       if (this.width > 5 * 152) {
         this.columns = 5;
-        this.rows = 2;
+        this.rows = 3;
       }
 
       if (this.width > 6 * 152) {
         this.columns = 6;
-        this.rows = 2;
+        this.rows = 3;
       }
 
       if (this.width > 7 * 152) {
         this.columns = 7;
-        this.rows = 2;
+        this.rows = 3;
       }
 
       if (this.width > 8 * 152) {
         this.columns = 8;
-        this.rows = 2;
+        this.rows = 3;
       }
     },
     getCookieValue(name: string) {
