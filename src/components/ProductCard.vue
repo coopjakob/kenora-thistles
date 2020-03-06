@@ -14,18 +14,7 @@
       /></a>
     </div>
 
-    <div v-if="splash" class="splash">
-      <div v-if="splash.label" class="promo-text">{{ splash.label }}</div>
-      <div class="price">
-        <div class="price-start">{{ splash.price }}</div>
-        <div class="price-end">
-          <span class="unit">{{ splash.unit }}</span>
-          <span v-if="splash.decimal" class="decimal">{{
-            splash.decimal
-          }}</span>
-        </div>
-      </div>
-    </div>
+    <Splash :description="promoDescription" />
 
     <div class="product-name">
       {{ name }}
@@ -112,7 +101,12 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
+import Splash from "@/components/Splash.vue";
+
 export default Vue.extend({
+  components: {
+    Splash
+  },
   props: {
     id: {
       type: String,
@@ -179,51 +173,6 @@ export default Vue.extend({
       } else {
         return false;
       }
-    },
-    splash(): any {
-      if (!this.receivedProducts[this.productIndex].potentialPromotions[0]) {
-        return false;
-      }
-
-      let parts: any;
-      // const regex = /(?<label>\d+ för )*(?<price>\d+):(?<decimal>[-\d]+) *\/*(?<unit>.*)/g; // problem with 10:- /kg
-      const regex = /(?<label>\d+ för )*(?<price>\d+):-?(?<decimal>[\d]+)? *\/*(?<unit>.*)/g; // will return empty decimal if :-
-
-      // https://regex101.com/
-
-      parts = regex.exec(
-        this.receivedProducts[this.productIndex].potentialPromotions[0]
-          .description
-      );
-
-      if (!parts) {
-        window.console.error("Kan inte lista ut erbjudandet i splash");
-        return false;
-      }
-
-      let label = parts.groups.label;
-      let price = parts.groups.price;
-      let decimal = parts.groups.decimal;
-      let unit = parts.groups.unit;
-
-      if (unit == "st" && !decimal) {
-        unit = null;
-      }
-
-      if (unit == "kg" && !decimal) {
-        label = "1 " + unit;
-        unit = null;
-      }
-
-      if (!unit && !decimal) {
-        price = price + ":-";
-      }
-
-      if (unit) {
-        unit = "/" + unit;
-      }
-
-      return { label, price, decimal, unit };
     },
     promoDescription(): any {
       if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
@@ -349,51 +298,9 @@ export default Vue.extend({
       height: auto
 
   .splash
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    width: 64px
-    height: 47px
     position: absolute
     top: 10px
     right: 10px
-    font-family: CoopNew, "Coop New", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-align: center
-    font-size: 22px
-    line-height: normal
-    color: rgb(255, 51, 0)
-    background-image: url('https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg')
-    background-size: contain
-
-    .promo-text
-      font-size: 10px
-      line-height: 1em
-      text-align: center
-      margin-bottom: -2px
-
-    .price
-      display: inline-block
-      align-self: flex-start
-      position: relative
-      margin: 0 auto
-
-    .price-start
-      display: inline-block
-
-    .price-end
-      display: inline-block
-      position: relative
-      font-size: 22px
-
-    .decimal
-      position: absolute
-      top: 1px
-      left: 0
-      font-size: 12px
-
-    .unit
-      font-size: 12px
 
   .product-name
     font-size: 16px
