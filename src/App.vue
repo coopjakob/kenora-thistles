@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <router-view />
+    <ProductMatrix />
   </div>
 </template>
 
 <script>
 import Vue from "vue";
-import router from "./router";
+import ProductMatrix from "@/components/ProductMatrix.vue";
 
 Vue.prototype.$receivedProducts = [];
 
 export default {
-  mounted: function() {
-    this.$router.push("/");
+  components: {
+    ProductMatrix
   }
 };
 </script>
@@ -33,18 +33,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   max-width: 1320px;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>
