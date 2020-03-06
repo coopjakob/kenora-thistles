@@ -56,7 +56,7 @@ export default Vue.extend({
       placement: "", // "home_page.mobile_horizontal_recs1",
       // test: window.ACC.config
       columns: 2,
-      rows: 2,
+      rows: 999,
       width: 0
     };
   },
@@ -214,7 +214,7 @@ export default Vue.extend({
 
       if (this.width > 3 * 152) {
         this.columns = 3;
-        this.rows = 3;
+        this.rows = 999;
       }
 
       if (this.width >= 4 * 152) {
