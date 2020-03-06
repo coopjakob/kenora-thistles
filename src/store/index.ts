@@ -6,7 +6,8 @@ export default new Vuex.Store({
     config: {
       // Dev
       rrSessionId: "s109421930639200",
-      user: "a148649e-235a-4157-8df8-5b2aa424ea7d",
+      // user: "a148649e-235a-4157-8df8-5b2aa424ea7d",
+      user: "anonymous",
       coopStore: "016001",
       cartguid: "a22a9ca5-1296-4606-9309-ed366f630723",
       authToken:
