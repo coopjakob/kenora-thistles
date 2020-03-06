@@ -9,8 +9,6 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
-    "@typescript-eslint/eslint-plugin": "^2.22.0",
-    "@typescript-eslint/parser": "^2.22.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "lodash.uniqby": "^4.7.0",
@@ -19,14 +17,14 @@
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-class-component": "^7.2.3",
-    "vue-custom-element": "^3.2.13",
     "vue-property-decorator": "^8.4.0",
-    "vue-router": "^3.1.6",
     "vuex": "^3.1.2",
     "webpack": "^4.42.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
+    "@typescript-eslint/eslint-plugin": "^2.22.0",
+    "@typescript-eslint/parser": "^2.22.0",
     "@vue/cli-plugin-babel": "^4.2.3",
     "@vue/cli-plugin-eslint": "^4.2.3",
     "@vue/cli-plugin-pwa": "^4.2.3",
