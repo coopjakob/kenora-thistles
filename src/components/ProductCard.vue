@@ -76,15 +76,6 @@
 
       <div class="action">
         <div
-          v-if="qty === 0"
-          class="add-to-cart js-qty-selector-plus"
-          tabindex="0"
-          role="button"
-          aria-pressed="false"
-        >
-          <span>Lägg till</span>
-        </div>
-        <div
           class="add-to-cart m-cart-addition qty-selector js-qty-selector"
           :data-product="id"
           data-category-lvl-1="0"

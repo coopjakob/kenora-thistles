@@ -110,7 +110,7 @@ export default Vue.extend({
       return window.ACC.config.cartguid;
     }
   },
-  created: function() {
+  created() {
     window.console.log(process.env.NODE_ENV);
     if (process.env.NODE_ENV !== "production") {
       // development
