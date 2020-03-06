@@ -95,7 +95,7 @@ export default Vue.extend({
 }
 
 .price {
-  display: inline-block;
+  display: flex;
   align-self: flex-start;
   position: relative;
   margin: 0 auto;

@@ -13,5 +13,17 @@
         "origin": "AUTHORED",
         "exported": true
     },
+    "coopjakob.memory/splash@0.1.3": {
+        "files": [
+            {
+                "relativePath": "src/components/Splash.vue",
+                "test": false,
+                "name": "Splash.vue"
+            }
+        ],
+        "mainFile": "src/components/Splash.vue",
+        "origin": "AUTHORED",
+        "exported": true
+    },
     "version": "14.7.6"
 }
