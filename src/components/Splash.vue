@@ -70,48 +70,55 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="sass" scoped>
-.splash
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: center
-  width: 64px
-  height: 47px
-  font-family: CoopNew, "Coop New", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-align: center
-  font-size: 22px
-  line-height: normal
-  color: rgb(255, 51, 0)
-  background-image: url('https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg')
-  background-size: contain
+<style scoped>
+.splash {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 47px;
+  font-family: CoopNew, "Coop New", Helvetica, Arial, sans-serif;
+  text-align: center;
+  font-size: 22px;
+  line-height: normal;
+  color: #ff3300;
+  background-image: url("https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg");
+  background-size: contain;
+}
 
-  .promo-text
-    font-size: 10px
-    line-height: 1em
-    text-align: center
-    margin-bottom: -2px
+.promo-text {
+  font-size: 10px;
+  line-height: 1em;
+  text-align: center;
+  margin-bottom: -2px;
+}
 
-  .price
-    display: inline-block
-    align-self: flex-start
-    position: relative
-    margin: 0 auto
+.price {
+  display: inline-block;
+  align-self: flex-start;
+  position: relative;
+  margin: 0 auto;
+}
 
-  .price-start
-    display: inline-block
+.price-start {
+  display: inline-block;
+}
 
-  .price-end
-    display: inline-block
-    position: relative
-    font-size: 22px
+.price-end {
+  display: inline-block;
+  position: relative;
+  font-size: 22px;
+}
 
-  .decimal
-    position: absolute
-    top: 1px
-    left: 0
-    font-size: 12px
+.decimal {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  font-size: 12px;
+}
 
-  .unit
-    font-size: 12px
+.unit {
+  font-size: 12px;
+}
 </style>
