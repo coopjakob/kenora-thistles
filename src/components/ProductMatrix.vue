@@ -111,7 +111,9 @@ export default Vue.extend({
     }
   },
   created: function() {
-    if (!window.ACC) {
+    window.console.log(process.env.NODE_ENV);
+    if (process.env.NODE_ENV !== "production") {
+      // development
       window.console.warn("Using fake config - data is not real");
       window.console.debug("state:", this.$store.state);
       window.ACC = {
