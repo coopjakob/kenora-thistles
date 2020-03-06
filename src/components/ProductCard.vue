@@ -10,7 +10,12 @@
     </div>
     <div class="product-image">
       <a :href="url" :title="imgAlt"
-        ><img width="200" height="200" :src="imgSrc" :alt="imgAlt"
+        ><img
+          width="200"
+          height="200"
+          :src="imgSrc"
+          :alt="imgAlt"
+          loading="lazy"
       /></a>
     </div>
 
