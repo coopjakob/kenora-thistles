@@ -163,30 +163,19 @@ export default Vue.extend({
       })
       .catch(error => (this.error = error));
 
-    this.setClassHasValue(0);
+    axios
+      .get(
+        `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}?fields=DEFAULT`,
+        config
+      )
+      .then(response => {
+        window.console.debug("response.data:", response.data);
+        this.$store.state.minicart.cartData = response.data;
+        return true;
+      })
+      .catch(error => (this.error = error));
   },
   methods: {
-    setClassHasValue(runs: number) {
-      window.console.debug("setClassHasValue runs", runs);
-      let findings = 0;
-      let container = document.querySelector(".product-matrix");
-
-      if (container) {
-        let elements = container.querySelectorAll(".js-qty-selector-input");
-        Array.prototype.forEach.call(elements, function(el, i) {
-          window.console.debug("has-value:", el.value);
-          if (el.value > 0) {
-            findings += 1;
-            el.closest(".m-cart-addition").classList.add("has-value");
-          }
-        });
-      }
-
-      if (findings === 0 && runs < 10) {
-        window.console.debug("none in cart found");
-        setTimeout(this.setClassHasValue.bind(null, runs + 1), 500);
-      }
-    },
     addMore() {
       window.console.debug("addMore()");
 
@@ -215,7 +204,6 @@ export default Vue.extend({
           this.productList = uniqBy(this.productList, "code");
           // this.productList = this.productList.push(...productsInResponse);
           Vue.prototype.$receivedProducts = this.productList;
-          this.setClassHasValue(0);
           return this.productList;
         })
         .catch(error => (this.error = error));

@@ -77,17 +77,20 @@
       <div class="action">
         <div
           class="add-to-cart m-cart-addition qty-selector js-qty-selector"
+          :class="{ 'has-value': initQty > 0 }"
           :data-product="id"
           data-category-lvl-1="0"
           data-category-lvl-3="0"
         >
           <button
             class="remove js-qty-selector-minus"
+            :disabled="initQty === 0"
             aria-label="Minska antalet"
           ></button>
           <input
             class="js-qty-selector-input"
             type="number"
+            :value="initQty"
             min="0"
             max="999"
             data-max="999"
@@ -124,6 +127,20 @@ export default Vue.extend({
     };
   },
   computed: {
+    initQty(): number {
+      let index = this.$store.state.minicart.cartData.entries.findIndex(
+        (entry: any) => entry.product.code === this.id
+      );
+
+      window.console.debug("index in cart:", index);
+
+      if (index > -1) {
+        window.console.debug("quantity exist in cart product, get old");
+        return this.$store.state.minicart.cartData.entries[index].quantity;
+      } else {
+        return 0;
+      }
+    },
     productIndex(): string {
       return this.receivedProducts.findIndex(
         (product: any) => product.code === this.id
@@ -499,6 +516,7 @@ export default Vue.extend({
       flex-grow: 1
       text-align: center
       font-size: 16px
+      color: white
       background: transparent
       border: none
       outline: none
@@ -516,7 +534,7 @@ export default Vue.extend({
   .is-delayed .remove
     cursor: wait!important
 
-  .qty-selector.has-value, .qty-selector.vue-has-value
+  .qty-selector.has-value
     background-color: #f5f5f5
     color: #00aa46
 
@@ -527,6 +545,9 @@ export default Vue.extend({
     .remove
       background-color: white
       background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+PHBhdGggZD0iTTE5IDkuNUgxIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMGFhNDYiLz48L3N2Zz4=')
+
+    input
+      color: #00aa46
 
   input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button
     -webkit-appearance: none
