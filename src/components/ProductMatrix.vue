@@ -1,7 +1,7 @@
 <template>
   <div class="product-matrix">
     <div class="header-module">
-      <h2 class="a-heading-1">Rekommendationer</h2>
+      <h2 class="a-heading-1">Populära varor</h2>
       <div v-if="error">{{ error }}</div>
     </div>
     <ProductCard
