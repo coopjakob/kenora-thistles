@@ -33,8 +33,10 @@ import ProductCard from "@/components/ProductCard.vue";
 
 import axios from "axios";
 import VueAxios from "vue-axios";
-
 Vue.use(VueAxios, axios);
+
+import chat from "@/plugins/chat";
+chat("c", "Hej! 👋");
 
 //dev
 declare global {
@@ -62,23 +64,16 @@ export default Vue.extend({
     };
   },
   computed: {
-    leftToShow(): number {
-      return this.productList.length - this.columns * this.rows;
-    },
-    limitList(): Array<any> {
-      let slice = Math.min(this.columns * this.rows, this.productList.length); //??
-      window.console.debug("slice:", slice);
-      return Object.entries(this.productList)
-        .slice(0, slice)
-        .map(entry => entry[1]);
-    },
     fillersNeeded(): Number {
       let itemsOnLastRow = this.productList.length % this.columns;
 
       if (itemsOnLastRow == 0) {
+        chat("p", "sista raden är full, det finns inte plats för extra kort");
         return 0;
       } else {
-        return this.columns - itemsOnLastRow;
+        let qtyFreeSpace = this.columns - itemsOnLastRow;
+        chat("p", `det finns ${qtyFreeSpace} lediga platser på sista raden`);
+        return qtyFreeSpace;
       }
     },
     rcs(): any {
@@ -95,7 +90,10 @@ export default Vue.extend({
     },
     user(): String {
       // window.ACC.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
-      window.console.debug("window.ACC.config.user", window.ACC.config.user);
+      chat(
+        "a",
+        "Jag vet inte ditt namn, men kallar dig " + window.ACC.config.user
+      );
       if (window.ACC.config.user) {
         return window.ACC.config.user;
       } else {
@@ -112,9 +110,9 @@ export default Vue.extend({
     }
   },
   created() {
-    window.console.log(process.env.NODE_ENV);
     if (process.env.NODE_ENV !== "production") {
       // development
+      window.console.log(process.env.NODE_ENV);
       window.console.warn("Using fake config - data is not real");
       window.console.debug("state:", this.$store.state);
       window.ACC = {
@@ -123,12 +121,10 @@ export default Vue.extend({
     }
   },
   mounted() {
-    window.console.debug("config:", window.ACC.config);
-
     this.getWidth();
     window.addEventListener("resize", this.getWidth);
 
-    window.console.debug(this.columns + "x" + this.rows);
+    chat("p", "Det verkar få plats " + this.columns + " varor på varje rad...");
 
     let config = {};
 
@@ -174,11 +170,14 @@ export default Vue.extend({
         this.$store.state.minicart.cartData = response.data;
         return true;
       })
-      .catch(error => (this.error = error));
+      .catch(error => {
+        chat("a", "Kan tyvärr inte hämta din varukorg");
+        this.error = error;
+      });
   },
   methods: {
     addMore() {
-      window.console.debug("addMore()");
+      chat("a", "Nu är det dags att ladda in fler varor...");
 
       let config = {};
 
@@ -211,7 +210,13 @@ export default Vue.extend({
     },
     getWidth() {
       this.width = this.$parent.$el.clientWidth;
-      window.console.debug("width:", this.width);
+
+      chat(
+        "p",
+        "Platsen där vi kan visa varor är " +
+          this.width +
+          "pixlar bred, brukar man säga"
+      );
 
       if (this.width > 3 * 152) {
         this.columns = 3;

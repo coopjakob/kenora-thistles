@@ -106,6 +106,8 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
+import chat from "@/plugins/chat";
+
 import Splash from "@/components/Splash.vue";
 
 export default Vue.extend({
@@ -131,10 +133,11 @@ export default Vue.extend({
         (entry: any) => entry.product.code === this.id
       );
 
-      window.console.debug("index in cart:", index);
-
       if (index > -1) {
-        window.console.debug("quantity exist in cart product, get old");
+        chat(
+          "a",
+          `Du har redan lagt ${this.$store.state.minicart.cartData.entries[index].product.name} i varukorgen, men vi visar den igen.`
+        );
         return this.$store.state.minicart.cartData.entries[index].quantity;
       } else {
         return 0;
@@ -229,8 +232,9 @@ export default Vue.extend({
     isPromo() {
       let index = this.productIndex;
       if (this.receivedProducts[index].promotionPrice) {
-        window.console.log(
-          "This was a promo: " + this.receivedProducts[index].name
+        chat(
+          "Rita",
+          `Jag ser ett erbjudande! Kolla närmre på ${this.receivedProducts[index].name}`
         );
         return true;
       } else {
