@@ -1,4 +1,6 @@
-replaceElement = document.querySelector("[data-type='CURRENT_OFFERS']");
+replaceElement = document.querySelector(
+  "[data-type='MOST_PURCHASED_PRODUCTS']"
+);
 replaceElement.id = "app";
 replaceElement.innerHTML = "";
 replaceElement.className = "";
