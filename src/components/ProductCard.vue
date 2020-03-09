@@ -187,7 +187,7 @@ export default Vue.extend({
         return this.receivedProducts[this.productIndex].potentialPromotions[0]
           .description;
       } else {
-        return false;
+        return "";
       }
     },
     price(): string {
