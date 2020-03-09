@@ -29,7 +29,7 @@ export default Vue.extend({
 
       let parts: any;
 
-      const regex = /(?<label>\d+ för )*(?<price>\d+)[:.]-?(?<decimal>[\d]+)? *\/*(?<unit>.*)/g;
+      const regex = /(?<label>\d+ för)? *(?<price>\d+)[:.]-?(?<decimal>[\d]+)? *k?r?\/*(?<unit>.*)/g;
       // https://regex101.com/
 
       parts = regex.exec(this.description);
