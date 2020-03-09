@@ -1,9 +1,5 @@
 <template>
   <div class="product-matrix">
-    <div class="header-module">
-      <h2 class="a-heading-1">Populära varor</h2>
-      <div v-if="error">{{ error }}</div>
-    </div>
     <ProductCard
       v-for="product in productList.slice(0, columns * rows)"
       :id="product.code"
@@ -273,16 +269,6 @@ export default Vue.extend({
   flex-wrap: wrap;
   // justify-content: space-between;
   // align-items: stretch;
-}
-
-.header-module {
-  width: 100%;
-  margin-bottom: 24px;
-}
-
-.nav-bar {
-  width: 100%;
-  text-align: center;
 }
 
 .button {
