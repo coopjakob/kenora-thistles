@@ -2,9 +2,7 @@
   <div id="app" class="o-start-module">
     <div class="header-module">
       <h2 class="a-heading-1">Populära varor</h2>
-      <a class="a-link" href="/handla/aktuella-erbjudanden"
-        >Visa alla erbjudanden</a
-      >
+      <a class="a-link" href=""></a>
     </div>
     <ProductMatrix />
   </div>
