@@ -155,6 +155,123 @@ export default Vue.extend({
       })
       .catch(error => window.console.error(error));
 
+    var MockAdapter = require("axios-mock-adapter");
+    var mock = new MockAdapter(axios);
+
+    mock.onGet(/\/carts\//).reply(200, {
+      type: "cartWsDTO",
+      appliedOrderPromotions: [],
+      appliedProductPromotions: [],
+      appliedVouchers: [],
+      calculated: true,
+      code: "30873951",
+      deliveryCost: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      deliveryItemsQuantity: 0,
+      deliveryMode: {
+        code: "homedelivery",
+        name: "Hemleverans"
+      },
+      deliveryOrderGroups: [],
+      entries: [],
+      extraAmountToBeReserved: {
+        currencyIso: "SEK",
+        formattedValue: "4:00 kr",
+        priceType: "TOTAL",
+        value: 4.0
+      },
+      guid: "a032e48d-f264-4dda-856f-f3db7741bd1e",
+      isPartOfSubscription: false,
+      net: false,
+      orderDiscounts: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      pickupItemsQuantity: 0,
+      pickupOrderGroups: [],
+      postCode: "17261",
+      site: "coop",
+      store: "016001",
+      subTotal: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      timeWindow: {},
+      totalDepositSum: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      totalDiscounts: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      totalItems: 0,
+      totalPrice: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      totalPriceWithExtraAmountToReserve: {
+        currencyIso: "SEK",
+        formattedValue: "4:00 kr",
+        priceType: "TOTAL",
+        value: 4.0
+      },
+      totalPriceWithTax: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      totalQuantity: 0,
+      totalTax: {
+        currencyIso: "SEK",
+        formattedValue: "0:00 kr",
+        priceType: "TOTAL",
+        value: 0.0
+      },
+      amountMissing: {
+        currencyIso: "SEK",
+        formattedValue: "500:00 kr",
+        priceType: "TOTAL",
+        value: 500.0
+      },
+      coopStore: {
+        code: "016001",
+        enova: false,
+        foodBagsOnly: false,
+        name: "STOCKHOLM"
+      },
+      hasSubscription: false,
+      isExtraOrderCart: false,
+      minimumShoppingValue: {
+        currencyIso: "SEK",
+        formattedValue: "500:00 kr",
+        priceType: "TOTAL",
+        value: 500.0
+      },
+      minimumShoppingValueReached: false,
+      potentialOrderPromotions: [],
+      potentialProductPromotions: [],
+      recipesGroups: [],
+      replaceAll: true,
+      subscriptionFrequency: 0,
+      totalUnitCount: 0
+    });
+
     axios
       .get(
         `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}?fields=DEFAULT`,
