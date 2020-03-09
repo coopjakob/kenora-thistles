@@ -50,7 +50,6 @@ export default Vue.extend({
   data() {
     return {
       productList: [] as any[],
-      error: "",
       placement: "", // "home_page.mobile_horizontal_recs1",
       // test: window.ACC.config
       columns: 2,
@@ -154,7 +153,7 @@ export default Vue.extend({
         Vue.prototype.$receivedProducts = this.productList;
         return this.productList;
       })
-      .catch(error => (this.error = error));
+      .catch(error => window.console.error(error));
 
     axios
       .get(
@@ -168,7 +167,7 @@ export default Vue.extend({
       })
       .catch(error => {
         chat("a", "Kan tyvärr inte hämta din varukorg");
-        this.error = error;
+        window.console.error(error);
       });
   },
   methods: {
@@ -202,7 +201,7 @@ export default Vue.extend({
           Vue.prototype.$receivedProducts = this.productList;
           return this.productList;
         })
-        .catch(error => (this.error = error));
+        .catch(error => window.console.error(error));
     },
     getWidth() {
       this.width = this.$parent.$el.clientWidth;

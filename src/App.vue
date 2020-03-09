@@ -6,7 +6,6 @@
         >Visa alla erbjudanden</a
       >
     </div>
-    <div v-if="error">{{ error }}</div>
     <ProductMatrix />
   </div>
 </template>
