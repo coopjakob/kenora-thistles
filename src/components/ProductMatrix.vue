@@ -295,14 +295,21 @@ export default Vue.extend({
 
 .fill-last-row {
   box-sizing: border-box;
-  min-width: 150px;
+  min-width: 142px;
   max-width: 230px;
-  flex-basis: 150px;
+  flex-basis: 142px;
   flex-grow: 1;
   margin: 1px;
-  padding: 0 15px;
+  padding: 10px;
 }
 
+@media (min-width: 425px) {
+  .fill-last-row {
+    min-width: 150px;
+    flex-basis: 150px;
+    padding: 15px;
+  }
+}
 // .product-matrix::after {
 //   content: "";
 //   flex: auto;
