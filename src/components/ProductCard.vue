@@ -9,13 +9,8 @@
       </div>
     </div>
     <div class="product-image">
-      <a :href="url" :title="imgAlt"
-        ><img
-          width="200"
-          height="200"
-          :src="imgSrc"
-          :alt="imgAlt"
-          loading="lazy"
+      <a :href="url" :title="name"
+        ><img width="200" height="200" :src="imgSrc" :alt="name" loading="lazy"
       /></a>
     </div>
 
@@ -222,9 +217,6 @@ export default Vue.extend({
       return this.cloudinaryImg(
         this.receivedProducts[this.productIndex].images[0].url
       );
-    },
-    imgAlt(): string {
-      return this.name + " " + this.price + "kr/st";
     }
   },
   mounted: function() {},
