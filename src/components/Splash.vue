@@ -80,7 +80,6 @@ export default Vue.extend({
   height: 47px;
   font-family: CoopNew, "Coop New", Helvetica, Arial, sans-serif;
   text-align: center;
-  font-size: 22px;
   line-height: normal;
   color: #ff3300;
   background-image: url("https://res.cloudinary.com/coopsverige/image/upload/v1569329381/cooponline/SVGs/pricesplash.svg");
@@ -88,10 +87,9 @@ export default Vue.extend({
 }
 
 .promo-text {
-  font-size: 10px;
-  line-height: 1em;
-  text-align: center;
   margin-bottom: -2px;
+  font-size: 10px;
+  line-height: 10px;
 }
 
 .price {
@@ -99,6 +97,8 @@ export default Vue.extend({
   align-self: flex-start;
   position: relative;
   margin: 0 auto;
+  font-size: 22px;
+  line-height: 22px;
 }
 
 .price-start {
