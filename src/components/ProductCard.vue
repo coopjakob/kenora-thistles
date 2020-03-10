@@ -394,6 +394,7 @@ export default Vue.extend({
 
     button:disabled
       background-color: rgba(0,85,55,.3)
+
     .add, .remove
       display: flex
       width: 34px
@@ -416,7 +417,8 @@ export default Vue.extend({
       background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+PHBhdGggZD0iTTE5IDkuNUgxIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiLz48L3N2Zz4=')
 
     .add:focus, .remove:focus
-      border: 1px solid white
+      border: none;
+      background-color: #001b11;
 
     input
       width: 34px
