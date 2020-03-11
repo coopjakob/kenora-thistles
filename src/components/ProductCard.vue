@@ -134,7 +134,7 @@ export default Vue.extend({
   },
   computed: {
     initQty(): number {
-      let index = this.$store.state.cart.cartData.entries.findIndex(
+      let index = this.$store.state.cart.entries.findIndex(
         (entry: any) => entry.product.code === this.id
       );
 
@@ -144,7 +144,7 @@ export default Vue.extend({
           `Du har redan lagt ${this.p.name} i varukorgen, men vi visar den igen.`
         );
 
-        return this.$store.state.cart.cartData.entries[index].quantity;
+        return this.$store.state.cart.entries[index].quantity;
       } else {
         return 0;
       }
