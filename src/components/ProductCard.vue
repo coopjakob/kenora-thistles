@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" :data-clickurl="clickUrl">
     <div class="product-labels">
       <div
         v-for="label in receivedProducts[productIndex].productLabels"
@@ -145,6 +145,9 @@ export default Vue.extend({
     },
     url(): string {
       return "https://coop.se" + this.receivedProducts[this.productIndex].url;
+    },
+    clickUrl(): string {
+      return this.receivedProducts[this.productIndex].clickUrl;
     },
     name(): string {
       return this.receivedProducts[this.productIndex].name;
