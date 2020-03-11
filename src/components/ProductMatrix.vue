@@ -1,14 +1,14 @@
 <template>
   <div class="product-matrix">
     <ProductCard
-      v-for="product in productList.slice(0, columns * rows)"
-      :id="product.code"
-      :key="product.code"
+      v-for="p in showProducts.slice(0, columns * rows)"
+      :id="p.code"
+      :key="p.code"
     />
     <div v-for="n in fillersNeeded" :key="n" class="fill-last-row"></div>
     <div class="show-more">
       <button
-        v-if="productList.length > 0 && productList.length <= 6"
+        v-if="showProducts.length > 0 && showProducts.length <= 6"
         class="button"
         @click="addMore"
       >
@@ -34,24 +34,13 @@ Vue.use(VueAxios, axios);
 import chat from "@/plugins/chat";
 chat("c", "Hej! 👋");
 
-//dev
-declare global {
-  interface Window {
-    ACC: {
-      config: any;
-    };
-  }
-}
-
 export default Vue.extend({
   components: {
     ProductCard
   },
   data() {
     return {
-      productList: [] as any[],
-      placement: "", // "home_page.mobile_horizontal_recs1",
-      // test: window.ACC.config
+      showProducts: [] as any[],
       columns: 2,
       rows: 999,
       width: 0,
@@ -60,7 +49,7 @@ export default Vue.extend({
   },
   computed: {
     fillersNeeded(): Number {
-      let itemsOnLastRow = this.productList.length % this.columns;
+      let itemsOnLastRow = this.showProducts.length % this.columns;
 
       if (itemsOnLastRow == 0) {
         chat("p", "sista raden är full, det finns inte plats för extra kort");
@@ -72,47 +61,10 @@ export default Vue.extend({
       }
     },
     rcs(): any {
-      // dev
-      sessionStorage.setItem(
-        "rcs",
-        "eF5j4cotK8lMETA0N7bUNdQ1ZClN9jAxNDFLS05O1k0xMzTRNTFNSdFNTTFMBXJNk5Is0xKNEg0tAZ_oDyg"
-      );
       return sessionStorage.getItem("rcs"); //this.getCookieValue("rr_rcs");
     },
-    rrSessionId(): String {
-      // window.ACC.config.rrSessionId = "s109421930639200";
-      return window.ACC.config.rrSessionId;
-    },
-    user(): String {
-      // window.ACC.config.user = "a148649e-235a-4157-8df8-5b2aa424ea7d";
-      chat(
-        "a",
-        "Jag vet inte ditt namn, men kallar dig " + window.ACC.config.user
-      );
-      if (window.ACC.config.user) {
-        return window.ACC.config.user;
-      } else {
-        return "a148649e-235a-4157-8df8-5b2aa424ea7d";
-      }
-    },
-    storeId(): String {
-      // window.ACC.config.coopStore = "016001";
-      return window.ACC.config.coopStore;
-    },
-    cartguid(): String {
-      // window.ACC.config.cartguid = "8050f27b-ce0b-49f8-b535-daa7f6faca1d";
-      return window.ACC.config.cartguid;
-    }
-  },
-  created() {
-    if (process.env.NODE_ENV !== "production") {
-      // development
-      window.console.log(process.env.NODE_ENV);
-      window.console.warn("Using fake config - data is not real");
-      window.console.debug("state:", this.$store.state);
-      window.ACC = {
-        config: this.$store.state.config
-      };
+    config(): any {
+      return window.ACC.config;
     }
   },
   mounted() {
@@ -122,48 +74,33 @@ export default Vue.extend({
     chat("p", "Det verkar få plats " + this.columns + " varor på varje rad...");
 
     let config = {};
-
-    if (this.user != "anonymous") {
+    if (this.config.user != "anonymous") {
       config = {
-        headers: { Authorization: `Bearer ${window.ACC.config.authToken}` }
+        headers: { Authorization: `Bearer ${this.config.authToken}` }
       };
     }
 
     axios
       .get(
-        // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=generic_page.generic_recs1"
-        // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=home_page.horizontal_recs1"
-        // https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1%257Chome_page.horizontal_recs2%257Chome_page.horizontal_recs1%257Chome_page.horizontal_recs1&fields=DEFAULT
-        // &currentPage=0&pageSize=6&storeId=016001&rrSessionId=s91829745064064&rcs=eF5jYSlN9kg2SU6xtLBM0k00SzPRNTFOTdM1Sks21zUyME1KMzdNNDAzTOXKLSvJTBEwNDe21DXUNQQArgQO0g
-        // `https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1&fields=DEFAULT&storeId=016001&rrSessionId=s109421930639200&rcs=`
-        `https://www.coop.se/ws/v2/coop/users/${this.user}/products/recommend-segmented?placements=home_page.2020_start_few&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`,
+        `https://www.coop.se/ws/v2/coop/users/${this.config.user}/products/recommend-segmented?placements=home_page.2020_start_few&fields=DEFAULT&storeId=${this.config.coopStore}&rrSessionId=${this.config.rrSessionId}&rcs=${this.rcs}`,
         config
       )
       .then(response => {
-        // this.productList = Vue.prototype.$receivedProducts =
-        //   response.data.placements[0].products;
-        // return this.productList;
-        // Vue.prototype.$receivedProducts = response.data[0].products;
-        // return (this.productList = response.data[0].products);
-        let productsInResponse = response.data.placements[0].products;
-        // this.productList.concat(productsInResponse);
-        this.productList = [...productsInResponse, ...this.productList]; // sometimes the second request is received first, so lets add it to the beginning
-        this.productList = uniqBy(this.productList, "code");
-        // this.productList = this.productList.push(...productsInResponse);
-        Vue.prototype.$receivedProducts = this.productList;
-        return this.productList;
+        const products = response.data.placements[0].products;
+        this.$store.commit("addProducts", products);
+
+        this.showProducts = [...products, ...this.showProducts]; // sometimes the second request is received first, so lets add it to the beginning
+        this.showProducts = uniqBy(this.showProducts, "code");
       })
       .catch(error => window.console.error(error));
 
     axios
       .get(
-        `https://www.coop.se/ws/v2/coop/users/${this.user}/carts/${this.cartguid}?fields=DEFAULT`,
+        `https://www.coop.se/ws/v2/coop/users/${this.config.user}/carts/${this.config.cartguid}?fields=DEFAULT`,
         config
       )
       .then(response => {
-        window.console.debug("response.data:", response.data);
-        this.$store.state.minicart.cartData = response.data;
-        return true;
+        this.$store.commit("cart", response.data);
       })
       .catch(error => {
         chat("a", "Kan tyvärr inte hämta din varukorg");
@@ -175,36 +112,25 @@ export default Vue.extend({
       chat("a", "Nu är det dags att ladda in fler varor...");
 
       let config = {};
-
-      if (this.user != "anonymous") {
+      if (this.config.user != "anonymous") {
         config = {
-          headers: { Authorization: `Bearer ${window.ACC.config.authToken}` }
+          headers: { Authorization: `Bearer ${this.config.authToken}` }
         };
       }
 
-      chat(
-        "Ann",
-        `https://www.coop.se/ws/v2/coop/users/${this.user}/products/recommend-segmented?placements=home_page.2020_start_full&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`
-      );
       axios
         .get(
-          // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=generic_page.generic_recs1"
-          // "https://www.coop.se/api/hybris/ecommerce/product/recommendations?placements[]=home_page.horizontal_recs1"
-          // https://www.coop.se/ws/v2/coop/users/anonymous/products/recommend-segmented?placements=home_page.horizontal_recs1%257Chome_page.horizontal_recs2%257Chome_page.horizontal_recs1%257Chome_page.horizontal_recs1&fields=DEFAULT
-          // &currentPage=0&pageSize=6&storeId=016001&rrSessionId=s91829745064064&rcs=eF5jYSlN9kg2SU6xtLBM0k00SzPRNTFOTdM1Sks21zUyME1KMzdNNDAzTOXKLSvJTBEwNDe21DXUNQQArgQO0g
-          // https://recs.richrelevance.com/rrserver/api/rrPlatform/recsForPlacements?apiKey=c5aa3f92242c950c&apiClientKey=182bc783b3c1fff9&returnMinimalRecItemData=true&rcs=eF5jYSlN9jBIMzI3M0lL000yTUvVNTG0SNY1TDUxBRKmyUCcmmZpmsiVW1aSmSJgaG5sqWuoawgApuYO1A&sessionId=daj0jpfe1p3xu3c&placements=home_page.2020_start_few&rid=016001
-          `https://www.coop.se/ws/v2/coop/users/${this.user}/products/recommend-segmented?placements=home_page.2020_start_full&fields=DEFAULT&storeId=${this.storeId}&rrSessionId=${this.rrSessionId}&rcs=${this.rcs}`,
+          `https://www.coop.se/ws/v2/coop/users/${this.config.user}/products/recommend-segmented?placements=home_page.2020_start_full&fields=DEFAULT&storeId=${this.config.coopStore}&rrSessionId=${this.config.rrSessionId}&rcs=${this.rcs}`,
           config
         )
         .then(response => {
-          let productsInResponse = response.data.placements[0].products;
-          // this.productList.concat(productsInResponse);
-          this.productList = [...this.productList, ...productsInResponse];
-          this.productList = uniqBy(this.productList, "code");
-          // this.productList = this.productList.push(...productsInResponse);
-          Vue.prototype.$receivedProducts = this.productList;
+          const products = response.data.placements[0].products;
+          this.$store.commit("addProducts", products);
+
+          this.showProducts = [...this.showProducts, ...products];
+          this.showProducts = uniqBy(this.showProducts, "code");
+
           this.moreAdded = true;
-          return this.productList;
         })
         .catch(error => window.console.error(error));
     },
@@ -226,7 +152,6 @@ export default Vue.extend({
       if (this.width >= 4 * 152) {
         this.columns = 4;
         this.rows = 3;
-        // this.placement = "home_page.2020_start_full"; //"home_page.horizontal_recs1"'
 
         if (!this.moreAdded) {
           this.addMore();

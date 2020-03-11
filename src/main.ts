@@ -4,6 +4,14 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
+//dev
+declare global {
+  interface Window {
+    ACC: {
+      config: any;
+    };
+  }
+}
 new Vue({
   store,
   render: h => h(App)

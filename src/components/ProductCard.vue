@@ -1,66 +1,77 @@
 <template>
-  <div class="card" :data-clickurl="clickUrl">
+  <div class="card" :data-clickurl="p.clickUrl">
     <div class="product-labels">
-      <div
-        v-for="label in receivedProducts[productIndex].productLabels"
-        :key="label.code"
-      >
+      <div v-for="label in p.productLabels" :key="label.code">
         <img :src="label.icon" />
       </div>
     </div>
     <div class="product-image">
-      <a :href="url" :title="name"
-        ><img width="200" height="200" :src="imgSrc" :alt="name" loading="lazy"
+      <a :href="url" :title="p.name"
+        ><img
+          width="200"
+          height="200"
+          :src="imgSrc"
+          :alt="p.name"
+          loading="lazy"
       /></a>
     </div>
 
-    <Splash :description="promoDescription" />
+    <Splash v-if="promo" :description="promo.description" />
 
     <div class="product-name">
-      {{ name }}
+      {{ p.name }}
     </div>
 
     <div class="product-summary">
       <img
-        v-if="isSweden"
+        v-if="p.fromSweden"
         class="flag"
         src="https://www.coop.se/assets/icons/flag-sweden.svg"
         alt="Sverige"
         width="16"
         height="10"
       />
-      <span class="brand">{{ brand }}.</span> {{ packageSizeInformation }}.
-      Jmf-pris {{ comparisonPrice }}.
-      <span
-        v-if="receivedProducts[productIndex].depositPrice.value"
-        class="deposit"
-        >Pant {{ deposit }}</span
+      <span class="manufacturer">{{ p.manufacturer }}.</span>
+      {{ p.packageSizeInformation }}. Jmf-pris
+      {{ p.comparisonPrice.formattedValue }}.
+      <span v-if="p.depositPrice && p.depositPrice.value" class="deposit"
+        >Pant {{ p.depositPrice.formattedValue }}</span
       >
     </div>
 
-    <div v-for="theInfo in consumerInfo" :key="theInfo" class="consumer-info">
-      {{ theInfo }}
+    <div
+      v-for="object in p.consumerInformationText"
+      :key="object"
+      class="consumer-info"
+    >
+      {{ object }}
     </div>
 
     <div
       class="pricing"
       :data-product="id"
-      data-category-lvl-1="0"
-      data-category-lvl-3="0"
+      :data-category-lvl-1="p.categories[0].code"
+      :data-category-lvl-3="p.categories[2].code"
     >
-      <div v-if="isMedmera" class="members-only">
+      <div v-if="promo && promo.medmera" class="members-only">
         Medlemspris
       </div>
 
-      <div v-if="maxUseText" class="max-use">
-        {{ maxUseText }}
+      <div v-if="promo && promo.maxUseText" class="max-use">
+        {{ promo.maxUseText }}
       </div>
 
-      <div class="product-price" :class="{ 'is-promo': promoPrice }">
-        <div v-if="promoPrice" class="promo-price">
-          {{ promoPrice }}<span class="unit">/st</span>
+      <div
+        v-if="p.promotionPrice && p.promotionPrice.formattedValue"
+        class="product-price"
+        :class="{ 'is-promo': p.promotionPrice.formattedValue }"
+      >
+        <div v-if="p.promotionPrice.formattedValue" class="promo-price">
+          {{ p.promotionPrice.formattedValue }}<span class="unit">/st</span>
         </div>
-        <div class="pick-price">{{ price }}<span class="unit">/st</span></div>
+        <div class="pick-price">
+          {{ p.price.formattedValue }}<span class="unit">/st</span>
+        </div>
       </div>
 
       <div class="action">
@@ -68,8 +79,8 @@
           class="add-to-cart m-cart-addition qty-selector js-qty-selector"
           :class="{ 'has-value': initQty > 0 }"
           :data-product="id"
-          :data-category-lvl-1="categories[0].code"
-          :data-category-lvl-3="categories[2].code"
+          :data-category-lvl-1="p.categories[0].code"
+          :data-category-lvl-3="p.categories[2].code"
         >
           <button
             class="remove js-qty-selector-minus"
@@ -118,133 +129,49 @@ export default Vue.extend({
   props: {
     id: {
       type: String,
-      // default: "0",
       required: true
     }
   },
-  data() {
-    // COOP = this.$store.state;
-    return {
-      receivedProducts: Vue.prototype.$receivedProducts
-    };
-  },
   computed: {
     initQty(): number {
-      let index = this.$store.state.minicart.cartData.entries.findIndex(
+      let index = this.$store.state.cart.cartData.entries.findIndex(
         (entry: any) => entry.product.code === this.id
       );
 
       if (index > -1) {
         chat(
           "a",
-          `Du har redan lagt ${this.$store.state.minicart.cartData.entries[index].product.name} i varukorgen, men vi visar den igen.`
+          `Du har redan lagt ${this.p.name} i varukorgen, men vi visar den igen.`
         );
-        return this.$store.state.minicart.cartData.entries[index].quantity;
+
+        return this.$store.state.cart.cartData.entries[index].quantity;
       } else {
         return 0;
       }
     },
     productIndex(): string {
-      return this.receivedProducts.findIndex(
-        (product: any) => product.code === this.id
+      return this.$store.state.products.findIndex(
+        (p: any) => p.code === this.id
       );
+    },
+    p(): any {
+      return this.$store.state.products[this.productIndex];
+    },
+    promo(): any {
+      if (this.p.potentialPromotions) {
+        return this.p.potentialPromotions[0];
+      } else {
+        return false;
+      }
     },
     url(): string {
-      return "https://coop.se" + this.receivedProducts[this.productIndex].url;
-    },
-    clickUrl(): string {
-      return this.receivedProducts[this.productIndex].clickUrl;
-    },
-    categories(): string {
-      return this.receivedProducts[this.productIndex].categories;
-    },
-    name(): string {
-      return this.receivedProducts[this.productIndex].name;
-    },
-    brand(): string {
-      return this.receivedProducts[this.productIndex].manufacturer;
-    },
-    packageSizeInformation(): string {
-      return this.receivedProducts[this.productIndex].packageSizeInformation;
-    },
-    comparisonPrice(): string {
-      return this.receivedProducts[this.productIndex].comparisonPrice
-        .formattedValue;
-    },
-    deposit(): string {
-      return this.receivedProducts[this.productIndex].depositPrice
-        .formattedValue;
-    },
-    consumerInfo(): string {
-      return this.receivedProducts[this.productIndex].consumerInformationText;
-    },
-    isSweden(): string {
-      return this.receivedProducts[this.productIndex].fromSweden;
-    },
-    isMedmera(): any {
-      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
-        return this.receivedProducts[this.productIndex].potentialPromotions[0]
-          .medmera;
-      } else {
-        return false;
-      }
-    },
-    promoDescription(): any {
-      if (this.receivedProducts[this.productIndex].potentialPromotions[0]) {
-        return this.receivedProducts[this.productIndex].potentialPromotions[0]
-          .description;
-      } else {
-        return "";
-      }
-    },
-    price(): string {
-      let price = this.receivedProducts[this.productIndex].price.formattedValue;
-      //price = price.replace(":-", "");
-      return price;
-    },
-    promoPrice(): any {
-      const index = this.productIndex;
-      if (this.isPromo()) {
-        let price = this.receivedProducts[index].promotionPrice.formattedValue;
-        //price = price.replace(":-", "");
-        return price;
-      } else {
-        return false;
-      }
-    },
-    maxUseText(): any {
-      let str = false;
-      if (
-        this.receivedProducts[this.productIndex].potentialPromotions[0] &&
-        this.receivedProducts[this.productIndex].potentialPromotions[0]
-          .maxUseText
-      ) {
-        str = this.receivedProducts[this.productIndex].potentialPromotions[0]
-          .maxUseText;
-      }
-
-      return str;
+      return "https://coop.se" + this.p.url;
     },
     imgSrc(): string {
-      return this.cloudinaryImg(
-        this.receivedProducts[this.productIndex].images[0].url
-      );
+      return this.cloudinaryImg(this.p.images[0].url);
     }
   },
-  mounted: function() {},
   methods: {
-    isPromo() {
-      let index = this.productIndex;
-      if (this.receivedProducts[index].promotionPrice) {
-        chat(
-          "Rita",
-          `Jag ser ett erbjudande! Kolla närmre på ${this.receivedProducts[index].name}`
-        );
-        return true;
-      } else {
-        return false;
-      }
-    },
     // https://res.cloudinary.com/coopsverige/image/upload/387245.tiff
     //         res.cloudinary.com/coopsverige/image/upload/fl_progressive,q_90,c_lpad,g_center,h_222,w_222/352288.jpg
     // https://res.cloudinary.com/coopsverige/image/upload/d_cooponline:missingimage:missing-image.png,fl_progressive,q_90,c_lpad,w_120,h_120/q_auto,f_auto//349012.jpg
@@ -314,7 +241,7 @@ export default Vue.extend({
     position: absolute
     top: 10px
     right: 10px
-    font-family: CoopNew, Helvetica, Arial, sans-serif;
+    font-family: CoopNew, "Coop New", Helvetica, Arial, sans-serif;
     padding-top: 5px; // adjustment to CoopNew font
 
   .product-name
@@ -328,7 +255,7 @@ export default Vue.extend({
   .flag
     margin-right: 0.25em
 
-  .brand
+  .manufacturer
     font-weight: bold
 
   .members-only
