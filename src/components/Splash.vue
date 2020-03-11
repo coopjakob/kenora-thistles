@@ -78,7 +78,6 @@ export default Vue.extend({
   align-items: center;
   width: 64px;
   height: 47px;
-  font-family: CoopNew, "Coop New", Helvetica, Arial, sans-serif;
   text-align: center;
   line-height: normal;
   color: #ff3300;
