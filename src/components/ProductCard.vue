@@ -68,8 +68,8 @@
           class="add-to-cart m-cart-addition qty-selector js-qty-selector"
           :class="{ 'has-value': initQty > 0 }"
           :data-product="id"
-          data-category-lvl-1="0"
-          data-category-lvl-3="0"
+          :data-category-lvl-1="categories[0].code"
+          :data-category-lvl-3="categories[2].code"
         >
           <button
             class="remove js-qty-selector-minus"
@@ -154,6 +154,9 @@ export default Vue.extend({
     },
     clickUrl(): string {
       return this.receivedProducts[this.productIndex].clickUrl;
+    },
+    categories(): string {
+      return this.receivedProducts[this.productIndex].categories;
     },
     name(): string {
       return this.receivedProducts[this.productIndex].name;
