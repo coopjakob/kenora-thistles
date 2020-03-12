@@ -391,7 +391,7 @@ export default Vue.extend({
     .is-delayed .remove
       cursor: wait!important
 
-    @media (min-width: 425px)
+    @media (min-width: 767px)
 
       .add, .remove
         display: flex
