@@ -47,12 +47,7 @@
       {{ object }}
     </div>
 
-    <div
-      class="pricing"
-      :data-product="id"
-      :data-category-lvl-1="p.categories[0].code"
-      :data-category-lvl-3="p.categories[2].code"
-    >
+    <div class="pricing" :data-product="id">
       <div v-if="promo && promo.medmera" class="members-only">
         Medlemspris
       </div>
