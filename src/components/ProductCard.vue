@@ -56,12 +56,8 @@
         {{ promo.maxUseText }}
       </div>
 
-      <div
-        v-if="p.promotionPrice && p.promotionPrice.formattedValue"
-        class="product-price"
-        :class="{ 'is-promo': p.promotionPrice.formattedValue }"
-      >
-        <div v-if="p.promotionPrice.formattedValue" class="promo-price">
+      <div class="product-price" :class="{ 'is-promo': p.promotionPrice }">
+        <div v-if="p.promotionPrice" class="promo-price">
           {{ p.promotionPrice.formattedValue }}<span class="unit">/st</span>
         </div>
         <div class="pick-price">
