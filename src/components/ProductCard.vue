@@ -125,19 +125,17 @@ export default Vue.extend({
   },
   computed: {
     initQty(): number {
-      let foundInCart = this.$store.state.cart.entries.filter((entry: any) => {
-        return entry.product.code === this.id;
-      });
-
-      if (foundInCart) {
-        chat(
-          "a",
-          `Du har redan lagt ${this.p.name} i varukorgen, men vi visar den igen.`
+      const cart = this.$store.state.cart;
+      let quantity = 0;
+      if (!!cart.entries.length) {
+        const foundInCart = cart.entries.find(
+          (entry: any) => entry.product.code === this.id
         );
-        return foundInCart.quantity;
-      } else {
-        return 0;
+        if (foundInCart) {
+          quantity = foundInCart.quantity;
+        }
       }
+      return quantity;
     },
     productIndex(): string {
       return this.$store.state.products.findIndex(
