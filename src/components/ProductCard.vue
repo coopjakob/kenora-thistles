@@ -132,6 +132,10 @@ export default Vue.extend({
           (entry: any) => entry.product.code === this.id
         );
         if (foundInCart) {
+          chat(
+            "a",
+            `Du har redan lagt ${this.p.name} i varukorgen, men vi visar den igen.`
+          );
           quantity = foundInCart.quantity;
         }
       }
