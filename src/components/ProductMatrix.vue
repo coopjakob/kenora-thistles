@@ -102,7 +102,7 @@ export default Vue.extend({
       )
       .then(response => {
         this.$store.commit("cart", response.data);
-        chat("a", "Har jag hämtat din varukorg");
+        chat("a", "Nu har jag hämtat din varukorg");
       })
       .catch(error => {
         chat("a", "Kan tyvärr inte hämta din varukorg");
