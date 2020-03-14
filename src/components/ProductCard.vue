@@ -126,7 +126,6 @@ export default Vue.extend({
   computed: {
     initQty(): number {
       const cart = this.$store.state.cart;
-      let quantity = 0;
       if (!!cart.entries.length) {
         const foundInCart = cart.entries.find(
           (entry: any) => entry.product.code === this.id
@@ -134,12 +133,12 @@ export default Vue.extend({
         if (foundInCart) {
           chat(
             "a",
-            `Du har redan lagt ${this.p.name} i varukorgen, men vi visar den igen.`
+            `${this.p.name} finns i varukorgen så då kan vi visa rätt antal på produktkortet`
           );
-          quantity = foundInCart.quantity;
+          return foundInCart.quantity;
         }
       }
-      return quantity;
+      return 0;
     },
     productIndex(): string {
       return this.$store.state.products.findIndex(
