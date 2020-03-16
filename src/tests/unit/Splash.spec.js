@@ -56,29 +56,29 @@ const description = [
 describe("input", () => {
   for (let entry of description) {
     test(entry.input, () => {
-      let cmp = shallowMount(Splash);
-      cmp.setProps({
+      let wrapper = shallowMount(Splash);
+      wrapper.setProps({
         description: entry.input
       });
 
       if (entry.label) {
-        expect(cmp.vm.splash.label).toBe(entry.label);
+        expect(wrapper.vm.splash.label).toBe(entry.label);
       } else {
-        expect(cmp.vm.splash.label).toBeFalsy();
+        expect(wrapper.vm.splash.label).toBeFalsy();
       }
 
-      expect(cmp.vm.splash.price).toBe(entry.price);
+      expect(wrapper.vm.splash.price).toBe(entry.price);
 
       if (entry.decimal) {
-        expect(cmp.vm.splash.decimal).toBe(entry.decimal);
+        expect(wrapper.vm.splash.decimal).toBe(entry.decimal);
       } else {
-        expect(cmp.vm.splash.decimal).toBeFalsy();
+        expect(wrapper.vm.splash.decimal).toBeFalsy();
       }
 
       if (entry.unit) {
-        expect(cmp.vm.splash.unit).toBe(entry.unit);
+        expect(wrapper.vm.splash.unit).toBe(entry.unit);
       } else {
-        expect(cmp.vm.splash.unit).toBeFalsy();
+        expect(wrapper.vm.splash.unit).toBeFalsy();
       }
     });
   }
