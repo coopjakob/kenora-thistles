@@ -1,5 +1,12 @@
 <template>
   <div class="product-matrix">
+    <component
+      :is="components[card.type]"
+      v-for="card in cards"
+      :key="card.sortKey"
+      :card="card"
+    />
+
     <ProductCard
       v-for="p in showProducts.slice(0, columns * rows)"
       :id="p.code"
@@ -19,6 +26,11 @@
 </template>
 
 <script lang="ts">
+import InfoCard from "./InfoCard.vue";
+import AdCard from "./AdCard.vue";
+
+import { CardTypes } from "@/types/Card";
+
 var uniqBy = require("lodash.uniqby");
 
 import Vue from "vue";
@@ -36,7 +48,9 @@ chat("c", "Hej! 👋");
 
 export default Vue.extend({
   components: {
-    ProductCard
+    ProductCard,
+    AdCard,
+    InfoCard
   },
   data() {
     return {
@@ -44,7 +58,60 @@ export default Vue.extend({
       columns: 2,
       rows: 999,
       width: 0,
-      moreAdded: false
+      moreAdded: false,
+      components: {
+        [CardTypes.INFO]: InfoCard,
+        [CardTypes.AD]: AdCard
+      },
+      cards: [
+        {
+          type: CardTypes.AD,
+          position: 1,
+          image: "https://source.unsplash.com/random/230x460/?dinner",
+          link: "http://coop.se/product"
+        },
+        {
+          type: CardTypes.INFO,
+          label: "KRAV0U0MARK",
+          image:
+            "https://res.cloudinary.com/coopsverige/image/upload/cooponline/alltid-bra-pris-200x200.png",
+          imageAltText: "",
+          buttonText: "Krav på Coop",
+          header: "Kravmärkt",
+          text:
+            "Ekologiskt betyder att det är dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+          link: "http://coop.se/product"
+        },
+        {
+          type: CardTypes.INFO,
+          brand: "Änglamark",
+          image:
+            "https://res.cloudinary.com/coopsverige/image/upload/cooponline/produktmarkning/NyckelhalLogo.svg",
+          imageAltText: "",
+          buttonText: "Mer info",
+          header: "Änglamark",
+          text: `Änglamark är vårt varumärke. Smod tempor incididunt ut labore et dol.
+            Magna aliqua. Ut enim ad minim veniam`,
+          link: "http://coop.se/product"
+        },
+        {
+          type: CardTypes.INFO,
+          image:
+            "https://res.cloudinary.com/coopsverige/image/upload/v1576163066/cooponline/G%C3%A5rdsbutiken/landingpage-recommended-producers/syltkrukan-type4.jpg",
+          imageAltText: "",
+          buttonText: "Gårdsbutiken",
+          header: "Handla lokalt",
+          text:
+            "I gårdsbutiken finns lokala varo rdolor sit amet, consectetur adipiscing elit, sed do et dolore magna aliqua. Ut enim ad minim veniam",
+          link: "http://coop.se/product"
+        },
+        {
+          type: CardTypes.AD,
+          position: 12,
+          image: "https://source.unsplash.com/random/230x460/?food",
+          link: "http://example.com/product"
+        }
+      ]
     };
   },
   computed: {
@@ -192,6 +259,27 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="sass" scoped>
+.card
+  box-sizing: border-box
+  display: flex
+  flex-direction: column
+  position: relative
+  min-width: 142px
+  max-width: 230px
+  flex-basis: 142px
+  flex-grow: 1
+  margin: 1px
+  background-color: white
+  padding: 10px
+  color: #333
+
+  @media (min-width: 425px)
+    min-width: 150px
+    flex-basis: 150px
+    padding: 15px
+</style>
 
 <style lang="scss" scoped>
 .product-matrix {
