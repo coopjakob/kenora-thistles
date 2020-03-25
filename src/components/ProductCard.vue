@@ -229,7 +229,6 @@ export default Vue.extend({
     top: 10px
     right: 10px
     font-family: CoopNew, "Coop New", Helvetica, Arial, sans-serif;
-    padding-top: 5px; // adjustment to CoopNew font
 
   .product-name
     font-size: 16px
