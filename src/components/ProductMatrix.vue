@@ -52,11 +52,9 @@ export default Vue.extend({
       let itemsOnLastRow = this.showProducts.length % this.columns;
 
       if (itemsOnLastRow == 0) {
-        chat("p", "sista raden är full, det finns inte plats för extra kort");
         return 0;
       } else {
         let qtyFreeSpace = this.columns - itemsOnLastRow;
-        chat("p", `det finns ${qtyFreeSpace} lediga platser på sista raden`);
         return qtyFreeSpace;
       }
     },
@@ -70,8 +68,6 @@ export default Vue.extend({
   mounted() {
     this.getWidth();
     window.addEventListener("resize", this.getWidth);
-
-    chat("p", "Det verkar få plats " + this.columns + " varor på varje rad...");
 
     let config = {};
     if (this.config.user != "anonymous") {
@@ -94,7 +90,6 @@ export default Vue.extend({
       })
       .catch(error => window.console.error(error));
 
-    chat("a", "Nu ska jag hämta din senaste varukorg");
     axios
       .get(
         `https://www.coop.se/ws/v2/coop/users/${this.config.user}/carts/${this.config.cartguid}?fields=DEFAULT`,
@@ -102,17 +97,13 @@ export default Vue.extend({
       )
       .then(response => {
         this.$store.commit("cart", response.data);
-        chat("a", "Nu har jag hämtat din varukorg");
       })
       .catch(error => {
-        chat("a", "Kan tyvärr inte hämta din varukorg");
         window.console.error(error);
       });
   },
   methods: {
     addMore() {
-      chat("a", "Nu är det dags att ladda in fler varor...");
-
       let config = {};
       if (this.config.user != "anonymous") {
         config = {
@@ -138,13 +129,6 @@ export default Vue.extend({
     },
     getWidth() {
       this.width = this.$parent.$el.clientWidth;
-
-      chat(
-        "p",
-        "Platsen där vi kan visa varor är " +
-          this.width +
-          "pixlar bred, brukar man säga"
-      );
 
       if (this.width > 3 * 152) {
         this.columns = 3;
