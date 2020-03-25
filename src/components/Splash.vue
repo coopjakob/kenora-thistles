@@ -97,7 +97,6 @@ export default Vue.extend({
   position: relative;
   margin: 0 auto;
   font-size: 22px;
-  line-height: 22px;
 }
 
 .price-start {
