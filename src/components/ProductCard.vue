@@ -131,10 +131,6 @@ export default Vue.extend({
           (entry: any) => entry.product.code === this.id
         );
         if (foundInCart) {
-          chat(
-            "a",
-            `${this.p.name} finns i varukorgen så då kan vi visa rätt antal på produktkortet`
-          );
           return foundInCart.quantity;
         }
       }
