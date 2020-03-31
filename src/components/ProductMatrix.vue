@@ -137,7 +137,7 @@ export default Vue.extend({
     window.addEventListener("resize", this.getWidth);
 
     let config = {};
-    if (this.config.user != "anonymous") {
+    if (this.config.user != "anonymous" && this.config.user != "anonymousb2b") {
       config = {
         headers: { Authorization: `Bearer ${this.config.authToken}` }
       };
@@ -172,7 +172,10 @@ export default Vue.extend({
   methods: {
     addMore() {
       let config = {};
-      if (this.config.user != "anonymous") {
+      if (
+        this.config.user != "anonymous" &&
+        this.config.user != "anonymousb2b"
+      ) {
         config = {
           headers: { Authorization: `Bearer ${this.config.authToken}` }
         };
